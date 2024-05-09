@@ -20,6 +20,16 @@ public class App extends Application {
         scene = new Scene(loadFXML("home"), 400, 720);
         stage.setScene(scene);
         stage.show();
+
+        try 
+        {
+            WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
+        } 
+        catch (Exception e)
+        {
+            System.out.print(e);
+        }
+        
     }
 
     static void setRoot(String fxml) throws IOException {
