@@ -24,6 +24,7 @@ public class App extends Application {
         try 
         {
             WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
+            WeatherAndLocationManager.GetCoordsFromLocation("London");
         } 
         catch (Exception e)
         {
