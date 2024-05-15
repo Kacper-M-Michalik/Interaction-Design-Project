@@ -2,7 +2,6 @@ package weather.app;
 
 import java.net.*;
 
-import org.json.*;
 
 import java.io.*;
 

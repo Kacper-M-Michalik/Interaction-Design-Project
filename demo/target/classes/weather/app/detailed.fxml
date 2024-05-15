@@ -54,7 +54,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </HBox>
-                  <HBox fx:id="home" alignment="CENTER" onMousePressed="#switchToHome" onTouchPressed="#switchToHome" onTouchStationary="#switchToHome" prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: white; -fx-border-width: 0 2px 0 0;" GridPane.columnIndex="1">
+                  <HBox alignment="CENTER" onMousePressed="#switchToHome" onTouchPressed="#switchToHome" onTouchStationary="#switchToHome" prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: white; -fx-border-width: 0 2px 0 0;" GridPane.columnIndex="1">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -73,7 +73,7 @@
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@imgs/menu.png" />
+                              <Image url="@imgs/menu_on.png" />
                            </image>
                            <effect>
                               <ColorAdjust brightness="0.95" />

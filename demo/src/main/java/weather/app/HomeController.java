@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 public class HomeController {
 
     @FXML
-    private void switchToSecondary() throws IOException {
+    private void switchToDetailed() throws IOException {
         App.setRoot("detailed");
     }
 }
