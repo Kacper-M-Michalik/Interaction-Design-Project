@@ -1,4 +1,8 @@
 weather/app/App.class
+weather/app/ElevationController$RotateAction.class
 module-info.class
+weather/app/WeatherAndLocationManager.class
+weather/app/LocationResult.class
 weather/app/HomeController.class
+weather/app/ElevationController.class
 weather/app/DetailedController.class
