@@ -16,7 +16,7 @@
                <children>
                   <Pane prefHeight="35.0" prefWidth="429.0">
                      <children>
-                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="46.0" layoutY="5.0" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="46.0" layoutY="5.0" onContextMenuRequested="#updateSearchItems" onKeyTyped="#updateSearchItemsOnSearch" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
                      </children></Pane>
                </children>
             </HBox>

@@ -7,7 +7,8 @@ import java.util.Queue;
 public class UserProfile {
     private static List<LocationSearchResult> favourites = new ArrayList<>();
     private static Queue<LocationSearchResult> recents = new ArrayDeque<>();
-    private static int maxFavourites = 5;
+    private static int maxFavourites = 4;
+    private static int maxRecents = 4;
 
     public static void addToFavourites(LocationSearchResult placeName) throws ExceededMaxSizeException{
         if (favourites.size() == 5){
