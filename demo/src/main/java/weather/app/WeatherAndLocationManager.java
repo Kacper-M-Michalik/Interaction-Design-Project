@@ -50,6 +50,7 @@ public class WeatherAndLocationManager
         String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height", LocationResult.Lat, LocationResult.Long);
         try 
         {
+            String test = GetWebDataUTF8(APIString);
             JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
             CurrentData = new WeatherData(LocationResult, WebData);
         } 
@@ -71,13 +72,13 @@ public class WeatherAndLocationManager
 
         if (Locations.length == 0) return Results;
         
-        if (Locations.length == 1) 
+        if (Locations.length >= 2 && Locations[Locations.length - 1].length() == 2)
         {
-            APIString = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s", Locations[0], Limit, APIKey);
+            APIString = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&limit=%d&appid=%s", Locations[0], Locations[Locations.length - 1], Limit, APIKey);
         }
         else
         {
-            APIString = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&limit=%d&appid=%s", Locations[0], Locations[Locations.length - 1], Limit, APIKey);
+            APIString = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s", Locations[0], Limit, APIKey);
         }
 
         String WebData;
