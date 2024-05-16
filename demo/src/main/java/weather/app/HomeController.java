@@ -15,7 +15,7 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-
+        temperature.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetTemperatures()[0]));
     }
     public ComboBox<String> searchBar;
 
