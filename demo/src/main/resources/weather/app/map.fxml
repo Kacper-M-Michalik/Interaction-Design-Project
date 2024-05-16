@@ -43,11 +43,8 @@
                             <children>
                                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@imgs/address.png" />
+                                        <Image url="@imgs/address_on.png" />
                                     </image>
-                                    <effect>
-                                        <ColorAdjust brightness="0.95" hue="1.0" />
-                                    </effect>
                                 </ImageView>
                             </children>
                             <cursor>
