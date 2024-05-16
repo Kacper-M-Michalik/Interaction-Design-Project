@@ -17,9 +17,12 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
-        WeatherAndLocationManager.SearchLocations("London");
+    public void start(Stage stage) throws IOException 
+    {
+        LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("London");
+        WeatherAndLocationManager.LoadWeatherData(Results[0]);
+        WeatherAndLocationManager.CurrentData.GetPrecipitationProbabilities();
+        System.out.println(WeatherAndLocationManager.CurrentData.JSON.getString("latitude"));
 
         scene = new Scene(loadFXML("home"), 400, 720);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
