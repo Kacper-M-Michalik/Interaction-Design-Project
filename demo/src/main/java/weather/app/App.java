@@ -24,7 +24,7 @@ public class App extends Application {
         stage.show();
 
         WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
-        WeatherAndLocationManager.GetCoordsFromLocation("London");
+        WeatherAndLocationManager.SearchLocations("London");
     }
 
     static void setRoot(String fxml) throws IOException {
