@@ -10,7 +10,7 @@ public class HomeController {
 
     @FXML
     private void initialize() {
-        temperature.setText(WeatherAndLocationManager.WeatherData.getString("elevation") + "°C");
+
     }
 
     @FXML
