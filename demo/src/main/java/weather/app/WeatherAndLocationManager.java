@@ -77,7 +77,7 @@ public class WeatherAndLocationManager
         //Translate location data
         //JSONObject oobj = new JSONObject(LocationData);
         
-        System.out.print(LocationData);
+//        System.out.print(LocationData);
         return new LocationResult(true, 0, 0);
     }
 

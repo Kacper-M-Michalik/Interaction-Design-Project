@@ -16,8 +16,8 @@ public class MapController {
     @FXML
     private void initialize() throws IOException {
         System.out.println("hi!");
-//        ElevationController elevationController = new ElevationController();
-//        elevationController.start(root);
+        ElevationController elevationController = new ElevationController();
+        elevationController.start(root);
     }
 
     @FXML
