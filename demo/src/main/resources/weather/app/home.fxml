@@ -16,14 +16,24 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
+<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
    <children>
       <BorderPane prefHeight="720.0" prefWidth="480.0">
          <top>
             <HBox prefHeight="35.0" prefWidth="480.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane prefHeight="35.0" prefWidth="342.0" />
+                  <Pane prefHeight="35.0" prefWidth="429.0">
+                     <children>
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="46.0" layoutY="5.0" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                     </children></Pane>
                </children>
                <effect>
                   <DropShadow />
