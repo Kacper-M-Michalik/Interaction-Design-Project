@@ -10,10 +10,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
+<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
    <children>
       <BorderPane prefHeight="720.0" prefWidth="480.0">
          <top>
@@ -91,6 +94,16 @@
                       <RowConstraints maxHeight="288.0" minHeight="10.0" prefHeight="288.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#fff95a" radius="70.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Text fx:id="temperature" strokeType="OUTSIDE" strokeWidth="0.0" text="15">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </StackPane>
                         <GridPane gridLinesVisible="true" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -102,7 +115,6 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                        <Circle fill="DODGERBLUE" radius="70.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                      </children>
                   </GridPane>
                </center>

@@ -2,8 +2,16 @@ package weather.app;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 public class HomeController {
+    @FXML
+    private Text temperature;
+
+    @FXML
+    private void initialize() {
+        temperature.setText(WeatherAndLocationManager.WeatherData.getString("elevation") + "°C");
+    }
 
     @FXML
     private void switchToDetailed() throws IOException {

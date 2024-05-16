@@ -15,16 +15,15 @@ public class App extends Application {
 
     private static Scene scene;
 
-
-
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("home"), 400, 720);
-        stage.setScene(scene);
-        stage.show();
-
         WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
         WeatherAndLocationManager.SearchLocations("London");
+
+        scene = new Scene(loadFXML("home"), 400, 720);
+        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
