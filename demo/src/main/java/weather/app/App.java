@@ -21,8 +21,6 @@ public class App extends Application {
     {
         LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("London");
         WeatherAndLocationManager.LoadWeatherData(Results[0]);
-        WeatherAndLocationManager.CurrentData.GetPrecipitationProbabilities();
-        System.out.println(WeatherAndLocationManager.CurrentData.JSON.getString("latitude"));
 
         scene = new Scene(loadFXML("home"), 400, 720);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
