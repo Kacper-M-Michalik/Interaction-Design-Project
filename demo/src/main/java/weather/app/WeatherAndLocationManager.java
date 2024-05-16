@@ -3,8 +3,8 @@ package weather.app;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
-
 import java.io.*;
+import org.json.*;
 
 //Kacper Michalik
 public class WeatherAndLocationManager 
@@ -85,15 +85,7 @@ public class WeatherAndLocationManager
             Results[i] = new LocationSearchResult(Current.getString("name"), Current.getString("country"), Current.getFloat("lat"), Current.getFloat("lon"));
         }
 
-<<<<<<< Updated upstream
-        //Translate location data
-        //JSONObject oobj = new JSONObject(LocationData);
-        
-//        System.out.print(LocationData);
-        return new LocationResult(true, 0, 0);
-=======
         return Results;
->>>>>>> Stashed changes
     }
 
 }
