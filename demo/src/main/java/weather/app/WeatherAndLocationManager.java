@@ -1,6 +1,7 @@
 package weather.app;
 
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 
 import java.io.*;
@@ -8,27 +9,26 @@ import java.io.*;
 //Kacper Michalik
 public class WeatherAndLocationManager 
 {
-    static String WeatherData = "";
+    public static JSONObject WeatherData;
 
-    static String GetWebData(String DataURL) throws Exception
+    private static String GetWebDataUTF8(String DataURL) throws Exception
     {
         InputStream Stream;
         
         URL RequestURL = new URL(DataURL);
         Stream = RequestURL.openStream();
-        
-        StringBuffer Buffer = new StringBuffer();
 
-        int ptr = Stream.read();
-        while (ptr != -1) 
-        {
-            Buffer.append((char)ptr);            
-            ptr = Stream.read();            
-        }
+        ByteArrayOutputStream OutputBuffer = new ByteArrayOutputStream();
+        byte[] TempBuffer = new byte[1024];
         
-        String Data = Buffer.toString();
-        System.out.print(Data);
-        return Data;
+        int Size = Stream.read(TempBuffer, 0, 1024);
+        while (Size  != -1) 
+        {
+            OutputBuffer.write(TempBuffer, 0, Size);
+            Size = Stream.read(TempBuffer, 0, 1024);
+        }
+
+        return new String(OutputBuffer.toByteArray(), StandardCharsets.UTF_8);
     }
 
     public static void LoadWeatherData(float Lat, float Long)
@@ -36,7 +36,7 @@ public class WeatherAndLocationManager
         String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=temperature_2m,relative_humidity_2m", Lat, Long);
         try 
         {
-            WeatherData = GetWebData(APIString);
+            WeatherData = new JSONObject(GetWebDataUTF8(APIString));
         } 
         catch (Exception e) 
         {            
@@ -44,7 +44,7 @@ public class WeatherAndLocationManager
         }
     }
 
-    public static LocationResult GetCoordsFromLocation(String Location)
+    public static LocationSearchResult[] SearchLocations(String Location)
     {
         String APIKey = "ab24e7163e9faf456a82dff51533b614";
         int Limit = 5;
@@ -52,7 +52,9 @@ public class WeatherAndLocationManager
         String[] Locations = Location.split(" ");
         String APIString;
 
-        if (Locations.length == 0) return new LocationResult(false, 0, 0);
+        LocationSearchResult[] Results = new LocationSearchResult[0];
+
+        if (Locations.length == 0) return Results;
         
         if (Locations.length == 1) 
         {
@@ -63,22 +65,35 @@ public class WeatherAndLocationManager
             APIString = String.format("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s&limit=%d&appid=%s", Locations[0], Locations[Locations.length - 1], Limit, APIKey);
         }
 
-        String LocationData;
+        String WebData;
         try 
         {            
-            LocationData = GetWebData(APIString);
+            WebData = GetWebDataUTF8(APIString);            
         } 
         catch (Exception e) 
         {
             System.out.print(e);
-            return new LocationResult(false, 0, 0);
+            return Results;
+        }
+        
+        JSONArray LocationData = new JSONArray(WebData);
+        Results = new LocationSearchResult[LocationData.length()];
+
+        for (int i = 0; i < Results.length; i++)
+        {            
+            JSONObject Current = LocationData.getJSONObject(i);
+            Results[i] = new LocationSearchResult(Current.getString("name"), Current.getString("country"), Current.getFloat("lat"), Current.getFloat("lon"));
         }
 
+<<<<<<< Updated upstream
         //Translate location data
         //JSONObject oobj = new JSONObject(LocationData);
         
 //        System.out.print(LocationData);
         return new LocationResult(true, 0, 0);
+=======
+        return Results;
+>>>>>>> Stashed changes
     }
 
 }

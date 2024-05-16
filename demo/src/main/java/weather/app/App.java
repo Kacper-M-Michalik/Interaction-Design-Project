@@ -23,16 +23,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-        try 
-        {
-            WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
-            WeatherAndLocationManager.GetCoordsFromLocation("London");
-        } 
-        catch (Exception e)
-        {
-            System.out.print(e);
-        }
-        
+        WeatherAndLocationManager.LoadWeatherData(0.02301232f, 10.2222f);
+        WeatherAndLocationManager.GetCoordsFromLocation("London");
     }
 
     static void setRoot(String fxml) throws IOException {

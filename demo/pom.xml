@@ -9,6 +9,12 @@
         <maven.compiler.source>11</maven.compiler.source>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>

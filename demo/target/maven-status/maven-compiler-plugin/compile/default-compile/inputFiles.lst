@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/LocationResult.java
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/ElevationController.java
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/WeatherAndLocationManager.java
@@ -6,3 +7,12 @@
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/HomeController.java
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/MapController.java
 /Users/drbracewell/code/Interaction-Design-Project/demo/src/main/java/weather/app/App.java
+=======
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\ElevationController.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\LocationResult.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\HomeController.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\WeatherAndLocationManager.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\App.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\module-info.java
+c:\Work\Interaction-Design-Project\demo\src\main\java\weather\app\DetailedController.java
+>>>>>>> Stashed changes
