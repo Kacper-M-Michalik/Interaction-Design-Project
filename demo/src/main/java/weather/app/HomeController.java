@@ -9,4 +9,9 @@ public class HomeController {
     private void switchToDetailed() throws IOException {
         App.setRoot("detailed");
     }
+
+    @FXML
+    private void switchToMap() throws IOException {
+        App.setRoot("map");
+    }
 }

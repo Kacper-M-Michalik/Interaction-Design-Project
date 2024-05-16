@@ -66,7 +66,7 @@ public class ElevationController
     int windowW = 380, windowH = 440;
     int sceneW = windowW - 20, sceneH = windowH - 80;
     
-    public void start(Stage primaryStage) {
+    public void start(Parent parentNode) {
 
         // Use a floawpane for the root node. In this case,
         // vertical and horizontal gaps of 10 are used
@@ -76,10 +76,7 @@ public class ElevationController
         rootNode.setAlignment(Pos.CENTER);
 
         // Create the scene
-        Scene myScene = new Scene(rootNode, windowW, windowH);
-
-        // Set the scene on the stage
-        primaryStage.setScene(myScene);
+        parentNode.getChildrenUnmodifiable().add(rootNode);
 
         // Create the camera
         pCamera = new PerspectiveCamera(true);
@@ -117,8 +114,6 @@ public class ElevationController
         Pane gui = buildGUI(cast);
 
         rootNode.getChildren().addAll(shapesSub, gui);
-
-        primaryStage.show();
     }
 
     public Group buildAxis(float rad, float size) {

@@ -40,7 +40,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="83.0" style="-fx-border-color: white; -fx-border-width: 0 2px 0 0;">
+                  <HBox alignment="CENTER" onMousePressed="#switchToMap" onTouchPressed="#switchToMap" onTouchStationary="#switchToMap" prefHeight="54.0" prefWidth="83.0" style="-fx-border-color: white; -fx-border-width: 0 2px 0 0;">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>

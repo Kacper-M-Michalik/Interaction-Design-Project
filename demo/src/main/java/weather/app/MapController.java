@@ -6,15 +6,18 @@ import java.time.format.DateTimeFormatter;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-public class DetailedController {
+public class MapController {
     @FXML
-    private Text clock;
+    private Pane root;
 
     @FXML
     private void initialize() throws IOException {
-
+        System.out.println("hi!");
+//        ElevationController elevationController = new ElevationController();
+//        elevationController.start(root);
     }
 
     @FXML
@@ -23,7 +26,7 @@ public class DetailedController {
     }
 
     @FXML
-    private void switchToMap() throws IOException {
-        App.setRoot("map");
+    private void switchToDetailed() throws IOException {
+        App.setRoot("detailed");
     }
 }
