@@ -1,0 +1,8 @@
+.root{
+    -fx-font-size: 16pt;
+    -fx-font-family: "Courier New";
+}
+
+#bg {
+    -fx-background-color:  linear-gradient(from 100.0% 0.0% to 100.0% 100.0%, #86cddd00 0.0%, #86cddd 0.6711%, #98f1ff 25.4522%, #eafcff 60.1101%, #ffffff00 100.0%);
+}
