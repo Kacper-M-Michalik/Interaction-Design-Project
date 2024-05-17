@@ -48,9 +48,8 @@ public class WeatherAndLocationManager
     public static void LoadWeatherData(LocationSearchResult LocationResult)
     {
         String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", LocationResult.Lat, LocationResult.Long);
-        try 
+        try
         {
-            String test = GetWebDataUTF8(APIString);
             JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
             CurrentData = new WeatherData(LocationResult, WebData);
         } 

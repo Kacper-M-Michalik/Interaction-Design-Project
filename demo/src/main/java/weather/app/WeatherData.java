@@ -19,14 +19,14 @@ public class WeatherData
 
     private int GetCurrentTimeIndex()
     {
-        LocalDateTime CurrentTime = LocalDateTime.now();
+        ZonedDateTime CurrentTime = ZonedDateTime.now(ZoneId.of("GMT"));
         String SearchString = CurrentTime.withMinute(0).truncatedTo(ChronoUnit.MINUTES).toString();
+        SearchString = SearchString.substring(0, SearchString.length() - 6);
         JSONArray Times = JSON.getJSONObject("hourly").getJSONArray("time");
         for (int i = 0; i < 24; i++)
         {
             if (Times.getString(i).equals(SearchString)) return i;
         }
-        
         return 0;
     }
 
