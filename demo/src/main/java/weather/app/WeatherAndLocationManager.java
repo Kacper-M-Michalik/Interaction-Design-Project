@@ -33,7 +33,7 @@ public class WeatherAndLocationManager
 
     public static void LoadWeatherData(float Lat, float Long)
     {
-        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height", Lat, Long);
+        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", Lat, Long);
         try 
         {
             JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
@@ -47,16 +47,7 @@ public class WeatherAndLocationManager
     
     public static void LoadWeatherData(LocationSearchResult LocationResult)
     {
-        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", LocationResult.Lat, LocationResult.Long);
-        try
-        {
-            JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
-            CurrentData = new WeatherData(LocationResult, WebData);
-        } 
-        catch (Exception e) 
-        {            
-            System.out.print(e);
-        }
+        LoadWeatherData(LocationResult.Lat, LocationResult.Long);
     }
 
     public static LocationSearchResult[] SearchLocations(String Location)
