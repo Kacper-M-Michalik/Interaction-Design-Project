@@ -11,11 +11,20 @@ import javafx.scene.control.ComboBox;
 
 public class HomeController {
     @FXML
-    private Text temperature;
+    private Text temperature, rainfall, visibility, snowfall, snowDepth, freezingHeight, apparentTemp;
 
+    void update() {
+        temperature.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetTemperatures()[0]));
+        rainfall.setText(String.format("%smm", WeatherAndLocationManager.CurrentData.GetPrecipitation()[0]));
+        visibility.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetVisibilities()[0]));
+        snowfall.setText(String.format("%scm", WeatherAndLocationManager.CurrentData.GetSnowfalls()[0]));
+        snowDepth.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetSnowdepths()[0]));
+        freezingHeight.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetFreezingHeights()[0]));
+        apparentTemp.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetApparentTemps()[0]));
+    }
     @FXML
     private void initialize() {
-        temperature.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetTemperatures()[0]));
+        update();
     }
     public ComboBox<String> searchBar;
 

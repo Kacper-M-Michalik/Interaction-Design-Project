@@ -116,6 +116,135 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Rainfall" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="rainfall" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="0mm" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Visibility" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="visibility" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="0m" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="165.0" layoutY="10.0" GridPane.rowIndex="1">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Snowfall" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="snowfall" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="0mm" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Snow depth" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="snowDepth" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="0m" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="10.0" GridPane.rowIndex="2">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Freezing height" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="freezingHeight" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="0m" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Text blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="Apparent temp." GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="apparentTemp" blendMode="SRC_ATOP" strokeType="OUTSIDE" strokeWidth="0.0" text="15°" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="26.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </GridPane>
+
+                           </children>
                         </GridPane>
                      </children>
                   </GridPane>
@@ -124,10 +253,10 @@
                   <HBox prefHeight="44.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
                </bottom>
                <left>
-                  <VBox prefHeight="428.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+                  <VBox prefHeight="525.0" prefWidth="16.0" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <VBox prefHeight="401.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
+                  <VBox prefHeight="525.0" prefWidth="13.0" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
          </center>

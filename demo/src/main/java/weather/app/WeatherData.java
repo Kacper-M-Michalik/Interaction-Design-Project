@@ -46,7 +46,7 @@ public class WeatherData
     public float[] GetVisibilities()
     {
         int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Visibs = JSON.getJSONObject("hourly").getJSONArray("visibilty");
+        JSONArray Visibs = JSON.getJSONObject("hourly").getJSONArray("visibility");
         
         float[] Results = new float[Visibs.length() - BaseIndex];
         for (int i = BaseIndex; i < Visibs.length(); i++)
@@ -104,6 +104,19 @@ public class WeatherData
         for (int i = BaseIndex; i < Precips.length(); i++)
         {
             Results[i - BaseIndex] = Precips.getFloat(i);
+        }
+        return Results;
+    }
+
+    public float[] GetApparentTemps()
+    {
+        int BaseIndex = GetCurrentTimeIndex();
+        JSONArray ApparentTemps = JSON.getJSONObject("hourly").getJSONArray("apparent_temperature");
+
+        float[] Results = new float[ApparentTemps.length() - BaseIndex];
+        for (int i = BaseIndex; i < ApparentTemps.length(); i++)
+        {
+            Results[i - BaseIndex] = ApparentTemps.getFloat(i);
         }
         return Results;
     }

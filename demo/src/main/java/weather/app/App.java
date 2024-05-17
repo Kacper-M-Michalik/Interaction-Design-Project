@@ -19,7 +19,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException 
     {
-        LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("London");
+        LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("Cambridge");
         WeatherAndLocationManager.LoadWeatherData(Results[0]);
 
         scene = new Scene(loadFXML("home"), 400, 720);
