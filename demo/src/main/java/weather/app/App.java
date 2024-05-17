@@ -17,7 +17,7 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException 
+    public void start(Stage stage) throws IOException
     {
         LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("Cambridge");
         WeatherAndLocationManager.LoadWeatherData(Results[0]);

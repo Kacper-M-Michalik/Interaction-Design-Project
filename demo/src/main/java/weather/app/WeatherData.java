@@ -30,95 +30,44 @@ public class WeatherData
         return 0;
     }
 
-    public float[] GetTemperatures()
-    {
+    public float[] GetFloatData(String var) {
         int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Temps = JSON.getJSONObject("hourly").getJSONArray("temperature_80m");
-        
-        float[] Results = new float[Temps.length() - BaseIndex];
-        for (int i = BaseIndex; i < Temps.length(); i++)
+        JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(var);
+
+        float[] Results = new float[Data.length() - BaseIndex];
+        for (int i = BaseIndex; i < Data.length(); i++)
         {
-            Results[i - BaseIndex] = Temps.getFloat(i);
+            Results[i - BaseIndex] = Data.getFloat(i);
         }
         return Results;
     }
 
-    public float[] GetVisibilities()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Visibs = JSON.getJSONObject("hourly").getJSONArray("visibility");
-        
-        float[] Results = new float[Visibs.length() - BaseIndex];
-        for (int i = BaseIndex; i < Visibs.length(); i++)
-        {
-            Results[i - BaseIndex] = Visibs.getFloat(i);
-        }
-        return Results;
-    }
-    
-    public float[] GetFreezingHeights()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Heights = JSON.getJSONObject("hourly").getJSONArray("freezing_level_height");
-        
-        float[] Results = new float[Heights.length() - BaseIndex];
-        for (int i = BaseIndex; i < Heights.length(); i++)
-        {
-            Results[i - BaseIndex] = Heights.getFloat(i);
-        }
-        return Results;
-    }
-    
-    public float[] GetSnowfalls()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Snowfalls = JSON.getJSONObject("hourly").getJSONArray("snowfall");
-        
-        float[] Results = new float[Snowfalls.length() - BaseIndex];
-        for (int i = BaseIndex; i < Snowfalls.length(); i++)
-        {
-            Results[i - BaseIndex] = Snowfalls.getFloat(i);
-        }
-        return Results;
-    }
-    
-    public float[] GetSnowdepths()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Snowdepths = JSON.getJSONObject("hourly").getJSONArray("snow_depth");
-        
-        float[] Results = new float[Snowdepths.length() - BaseIndex];
-        for (int i = BaseIndex; i < Snowdepths.length(); i++)
-        {
-            Results[i - BaseIndex] = Snowdepths.getFloat(i);
-        }
-        return Results;
+    public float[] GetTemperatures() {
+        return GetFloatData("temperature_80m");
     }
 
-    public float[] GetPrecipitation()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Precips = JSON.getJSONObject("hourly").getJSONArray("precipitation");
-        
-        float[] Results = new float[Precips.length() - BaseIndex];
-        for (int i = BaseIndex; i < Precips.length(); i++)
-        {
-            Results[i - BaseIndex] = Precips.getFloat(i);
-        }
-        return Results;
+    public float[] GetVisibilities() {
+        return GetFloatData("visibility");
     }
 
-    public float[] GetApparentTemps()
-    {
-        int BaseIndex = GetCurrentTimeIndex();
-        JSONArray ApparentTemps = JSON.getJSONObject("hourly").getJSONArray("apparent_temperature");
+    public float[] GetFreezingHeights() {
+        return GetFloatData("freezing_level_height");
+    }
 
-        float[] Results = new float[ApparentTemps.length() - BaseIndex];
-        for (int i = BaseIndex; i < ApparentTemps.length(); i++)
-        {
-            Results[i - BaseIndex] = ApparentTemps.getFloat(i);
-        }
-        return Results;
+    public float[] GetSnowfalls() {
+        return GetFloatData("snowfall");
+    }
+
+    public float[] GetSnowDepths() {
+        return GetFloatData("snow_depth");
+    }
+
+    public float[] GetPrecipitation() {
+        return GetFloatData("precipitation");
+    }
+
+    public float[] GetApparentTemps() {
+        return GetFloatData("apparent_temperature");
     }
 
     public int[] GetPrecipitationProbabilities()
@@ -134,4 +83,35 @@ public class WeatherData
         return Results;
     }
 
+    float GetCurrentTemperature() {
+        return JSON.getJSONObject("current").getFloat("temperature_80m");
+    }
+
+    float GetCurrentVisibility() {
+        return JSON.getJSONObject("current").getFloat("visibility");
+    }
+
+    float GetCurrentFreezingHeight() {
+        return JSON.getJSONObject("current").getFloat("freezing_level_height");
+    }
+
+    float GetCurrentSnowfall() {
+        return JSON.getJSONObject("current").getFloat("snowfall");
+    }
+
+    float GetCurrentSnowDepth() {
+        return JSON.getJSONObject("current").getFloat("snow_depth");
+    }
+
+    float GetCurrentPrecipitation() {
+        return JSON.getJSONObject("current").getFloat("precipitation");
+    }
+
+    float GetCurrentApparentTemp() {
+        return JSON.getJSONObject("current").getFloat("apparent_temperature");
+    }
+
+    int GetCurrentPrecipitationProb() {
+        return JSON.getJSONObject("current").getInt("precipitation_probability");
+    }
 }
