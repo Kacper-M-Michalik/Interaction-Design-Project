@@ -31,33 +31,21 @@ public class WeatherAndLocationManager
         return new String(OutputBuffer.toByteArray(), StandardCharsets.UTF_8);
     }
 
-    public static void LoadWeatherData(float Lat, float Long)
-    {
-        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height", Lat, Long);
-        try 
+    public static void LoadWeatherData(float Lat, float Long) {
+        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature&current=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", Lat, Long);
+        try
         {
             JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
             CurrentData = new WeatherData(new LocationSearchResult("Unknown", "Unknown", Lat, Long), WebData);
-        } 
+        }
         catch (Exception e) 
         {            
             System.out.print(e);
         }
     }
     
-    public static void LoadWeatherData(LocationSearchResult LocationResult)
-    {
-        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height", LocationResult.Lat, LocationResult.Long);
-        try 
-        {
-            String test = GetWebDataUTF8(APIString);
-            JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
-            CurrentData = new WeatherData(LocationResult, WebData);
-        } 
-        catch (Exception e) 
-        {            
-            System.out.print(e);
-        }
+    public static void LoadWeatherData(LocationSearchResult LocationResult) {
+        LoadWeatherData(LocationResult.Lat, LocationResult.Long);
     }
 
     public static LocationSearchResult[] SearchLocations(String Location)

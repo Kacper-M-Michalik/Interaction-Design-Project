@@ -16,8 +16,8 @@ public class LocationSearchResult
         Long = SetLong;
     }
 
-    @Override
-    public String toString(){
+    public String toString()
+    {
         return Location + " " + Country;
     }
 }

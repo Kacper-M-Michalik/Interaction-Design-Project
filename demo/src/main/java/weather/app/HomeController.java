@@ -13,12 +13,22 @@ public class HomeController {
     @FXML
     public ComboBox<String> searchBar;
     @FXML
-    private Text temperature;
+    private Text temperature, rainfall, visibility, snowfall, snowDepth, freezingHeight, apparentTemp;
 
+    void update() {
+        temperature.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetCurrentTemperature()));
+        rainfall.setText(String.format("%smm", WeatherAndLocationManager.CurrentData.GetCurrentPrecipitation()));
+        visibility.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetCurrentVisibility()));
+        snowfall.setText(String.format("%scm", WeatherAndLocationManager.CurrentData.GetCurrentSnowfall()));
+        snowDepth.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetCurrentSnowDepth()));
+        freezingHeight.setText(String.format("%sm", WeatherAndLocationManager.CurrentData.GetCurrentFreezingHeight()));
+        apparentTemp.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetCurrentApparentTemp()));
+    }
     @FXML
     private void initialize() {
-
+        update();
     }
+    public ComboBox<String> searchBar;
 
     @FXML void updateSearchItems(){
         ObservableList<String> items = searchBar.getItems();
