@@ -1,45 +1,63 @@
 package weather.app;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-public class UserProfile {
-    private static List<LocationSearchResult> favourites = new ArrayList<>();
-    private static Queue<LocationSearchResult> recents = new ArrayDeque<>();
-    private static int maxFavourites = 4;
-    private static int maxRecents = 4;
+import java.util.*;
 
-    public static void addToFavourites(LocationSearchResult placeName) throws ExceededMaxSizeException{
-        if (favourites.size() == 5){
-            throw new ExceededMaxSizeException("Attempted to insert more favourites than the limit" + maxFavourites);
-        }
-        favourites.add(placeName);
+public class UserProfile {
+    private static final int maxFavourites = 4, maxRecents = 4;
+    private static final List<String>  favourites= new ArrayList<>();
+    private static final Queue<String> recents = new LinkedList<>();
+    private static String currentLocation = "";
+
+
+    public static void setCurrentLocation(LocationSearchResult place){
+        setCurrentLocation(place.toString());
     }
 
-    public static List<LocationSearchResult> getFavourites(){
+    public static void setCurrentLocation(String placeName){
+        currentLocation = placeName;
+    }
+
+    public static String getCurrentLocation(){
+        return currentLocation;
+    }
+
+    public static boolean isFavourite(){
+        return favourites.contains(currentLocation);
+    }
+
+    public static boolean addToFavourites(String placeName){
+        if (favourites.size() > maxFavourites){
+            return false;
+        }
+        if (!favourites.contains(placeName)) {
+            favourites.add(placeName);
+        }
+        recents.removeIf(favourites::contains);
+        return true;
+    }
+
+    public static boolean removeFromFavourites(String placeName) {
+        return favourites.remove(placeName);
+    }
+
+    public static void updateRecents(String placeName){
+        recents.remove(placeName);
+        recents.add(placeName);
+        recents.removeIf(favourites::contains);
+        if (recents.size() > maxRecents){
+            recents.remove();
+        }
+    }
+
+    public static List<String> getFavourites(){
         return favourites;
     }
 
-    public static List<String> getFavouritesString(){
-        List<String> temp = new ArrayList<>();
-        for (LocationSearchResult l: favourites){
-            temp.add(l.toString());
-        }
-        return temp;
-    }
 
-    public static Queue<LocationSearchResult> getRecents(){
+    public static Queue<String> getRecents(){
         return recents;
     }
 
-    public static List<String> getRecentsString(){
-        List<String> temp = new ArrayList<>();
-        for (LocationSearchResult l: recents){
-            temp.add(l.toString());
-        }
-        return temp;
-    }
 
 
 }
