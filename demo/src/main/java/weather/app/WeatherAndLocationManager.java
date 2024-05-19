@@ -2,7 +2,10 @@ package weather.app;
 
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.util.concurrent.TimeUnit;
 import java.io.*;
 import org.json.*;
 
@@ -31,20 +34,22 @@ public class WeatherAndLocationManager
         return new String(OutputBuffer.toByteArray(), StandardCharsets.UTF_8);
     }
 
-    public static void LoadWeatherData(float Lat, float Long) {
+    public static void LoadWeatherData(float Lat, float Long)
+    {
         String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature&current=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", Lat, Long);
-        try
+        try 
         {
             JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
             CurrentData = new WeatherData(new LocationSearchResult("Unknown", "Unknown", Lat, Long), WebData);
-        }
+        } 
         catch (Exception e) 
         {            
             System.out.print(e);
         }
     }
     
-    public static void LoadWeatherData(LocationSearchResult LocationResult) {
+    public static void LoadWeatherData(LocationSearchResult LocationResult)
+    {
         LoadWeatherData(LocationResult.Lat, LocationResult.Long);
     }
 
@@ -90,6 +95,100 @@ public class WeatherAndLocationManager
         }
 
         return Results;
+    }
+
+    public static ElevationResult LoadElevationData(LocationSearchResult LocationResult)
+    {
+        //For Lat/Long:
+        //4th decimal place unit = 11m distance
+
+        final int SampleSize = 20;
+        float[][] Elevations = new float[SampleSize][SampleSize];
+
+        int TotalPacked = 0;
+        int x = 0;
+        int y = 0;        
+        
+        float Offset = (float)(SampleSize - 1) * 0.5f * 0.0001f;
+        float Long = LocationResult.Long + y * 0.0001f - Offset;
+        float Min = Float.POSITIVE_INFINITY;
+        float Max = Float.NEGATIVE_INFINITY;
+
+        NumberFormat Formatter = new DecimalFormat("0.0000");
+        StringBuilder Builder = new StringBuilder();
+
+        while (TotalPacked < SampleSize * SampleSize)
+        {
+            int PackedCount = 0;
+            Builder = new StringBuilder();
+            Builder.append("https://api.opentopodata.org/v1/eudem25m?locations=");
+
+            int CopyX = x;
+            int CopyY = y;
+
+            while (PackedCount < 100 && TotalPacked < SampleSize * SampleSize)
+            {
+                float Lat = LocationResult.Lat + x * 0.0001f - Offset;
+                Builder.append(Formatter.format(Lat));
+                Builder.append(",");
+                Builder.append(Formatter.format(Long));         
+                Builder.append("|");
+                
+                TotalPacked++;
+                PackedCount++;                    
+                x++;
+                if (x >= SampleSize)
+                {
+                    x = 0;
+                    y++;                    
+                    Long = LocationResult.Long + y * 0.0001f - Offset;
+                }
+            }
+
+            Builder.deleteCharAt(Builder.length() - 1);
+            Builder.append("&interpolation=cubic");
+            
+            boolean Exit = false;
+            JSONArray WebData = null;
+            while (!Exit)
+            {
+                try 
+                {
+                    WebData = new JSONObject(GetWebDataUTF8(Builder.toString())).getJSONArray("results");
+                    Exit = true;
+                } 
+                catch (Exception e) 
+                {            
+                    try 
+                    {                    
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    } catch (Exception e2) 
+                    {              
+                        System.out.println("CRITICAL FAIL - ELEVATION DOWNLOAD");      
+                        System.out.print(e);
+                        System.out.print(e2);
+                        return new ElevationResult(new float[0][0], 0, 0);
+                    }    
+                }
+            }
+
+            for (int i = 0; i < PackedCount; i++)
+            {
+                final float Val = WebData.getJSONObject(i).getFloat("elevation");
+                Elevations[CopyY][CopyX] = Val;
+                if (Val > Max) Max = Val;
+                if (Val < Min) Min = Val;
+
+                CopyX++;
+                if (CopyX >= SampleSize)
+                {
+                    CopyX = 0;
+                    CopyY++;                    
+                }
+            }
+        }
+
+        return new ElevationResult(Elevations, Min, Max);
     }
 
 }

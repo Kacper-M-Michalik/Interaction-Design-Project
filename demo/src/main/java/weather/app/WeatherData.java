@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
-//Kacper Michalik
+//Kacper Michalik + Joshua Chen
 public class WeatherData 
 {
     LocationSearchResult LocationData;
@@ -30,9 +30,21 @@ public class WeatherData
         return 0;
     }
 
-    public float[] GetFloatData(String var) {
+    public float[] GetFloatData(String Var) {
         int BaseIndex = GetCurrentTimeIndex();
-        JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(var);
+        JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(Var);
+
+        float[] Results = new float[Data.length() - BaseIndex];
+        for (int i = BaseIndex; i < Data.length(); i++)
+        {
+            Results[i - BaseIndex] = Data.getFloat(i);
+        }
+        return Results;
+    }
+
+    public float[] GetFloatData(String Var, int Offset) {
+        int BaseIndex = GetCurrentTimeIndex() + Offset;
+        JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(Var);
 
         float[] Results = new float[Data.length() - BaseIndex];
         for (int i = BaseIndex; i < Data.length(); i++)
@@ -55,15 +67,15 @@ public class WeatherData
     }
 
     public float[] GetSnowfalls() {
-        return GetFloatData("snowfall");
+        return GetFloatData("snowfall", 1);
     }
 
     public float[] GetSnowDepths() {
         return GetFloatData("snow_depth");
     }
 
-    public float[] GetPrecipitation() {
-        return GetFloatData("precipitation");
+    public float[] GetPrecipitations() {
+        return GetFloatData("precipitation", 1);
     }
 
     public float[] GetApparentTemps() {
@@ -72,7 +84,7 @@ public class WeatherData
 
     public int[] GetPrecipitationProbabilities()
     {
-        int BaseIndex = GetCurrentTimeIndex();
+        int BaseIndex = GetCurrentTimeIndex() + 1;
         JSONArray Precips = JSON.getJSONObject("hourly").getJSONArray("precipitation_probability");
         
         int[] Results = new int[Precips.length() - BaseIndex];

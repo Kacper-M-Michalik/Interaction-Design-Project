@@ -15,6 +15,8 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    public final static int ScreenWidth = 400;
+    public final static int ScreenHeight = 720;
 
     @Override
     public void start(Stage stage) throws IOException
@@ -23,7 +25,7 @@ public class App extends Application {
         WeatherAndLocationManager.LoadWeatherData(Results[0]);
         UserProfile.setCurrentLocation(Results[0]);
 
-        scene = new Scene(loadFXML("home"), 400, 720);
+        scene = new Scene(loadFXML("home"), ScreenWidth, ScreenHeight);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         stage.setScene(scene);
         stage.show();

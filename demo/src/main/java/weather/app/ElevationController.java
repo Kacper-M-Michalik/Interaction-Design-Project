@@ -11,6 +11,7 @@ import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Parent;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
@@ -58,35 +59,32 @@ public class ElevationController
     PerspectiveCamera pCamera;
     Group cast, xyzAxis;
     // Our pyramid shape
-    MeshView pyramid;
+    MeshView MapMesh;
     // Actions
-    RotateAction rotShapeX, rotShapeY, rotShapeZ;
+    //RotateAction rotShapeX, rotShapeY, rotShapeZ;
     RotateAction rotCamX, rotCamY, rotCamZ;
 
-    int windowW = 380, windowH = 440;
-    int sceneW = windowW - 20, sceneH = windowH - 80;
+    int SceneW = App.ScreenWidth;
+    int SceneH = App.ScreenHeight - 210; //-130
+    
+    float VertexSpacing = 20f;
     
     public void start(Pane parentNode) {
 
         // Use a floawpane for the root node. In this case,
         // vertical and horizontal gaps of 10 are used
         FlowPane rootNode = new FlowPane(10, 10);
-
         // Center nodes in the scene
         rootNode.setAlignment(Pos.CENTER);
-
         // Create the scene
         parentNode.getChildren().add(rootNode);
 
         // Create the camera
         pCamera = new PerspectiveCamera(true);
-
         // Set the camera's rotation axis to Y axis
         // pCamera.setRotationAxis(Rotate.Y_AXIS);
         // Add transform to the camera
-        pCamera.getTransforms().addAll(new Translate(0, 0, -500));
-
-        // Set the cameras field of view and farclip
+        pCamera.getTransforms().addAll(new Translate(0, -150, -500));
         pCamera.setFieldOfView(45);
         pCamera.setFarClip(1000);
 
@@ -98,14 +96,14 @@ public class ElevationController
         xyzAxis = (buildAxis(1, 200));
         groupAll.getChildren().addAll(cast, xyzAxis);
         // Create the scene and set its camera
-        SubScene shapesSub = new SubScene(groupAll, sceneW, sceneH, true,
+        SubScene shapesSub = new SubScene(groupAll, SceneW, SceneH, true,
                 SceneAntialiasing.DISABLED);
         shapesSub.setFill(Color.AZURE);
         shapesSub.setCamera(pCamera);
         // Set up rotation axis
-        rotShapeX = new RotateAction(Rotate.X_AXIS, cast);
-        rotShapeY = new RotateAction(Rotate.Y_AXIS, cast);
-        rotShapeZ = new RotateAction(Rotate.Z_AXIS, cast);
+        //rotShapeX = new RotateAction(Rotate.X_AXIS, cast);
+        //rotShapeY = new RotateAction(Rotate.Y_AXIS, cast);
+        //rotShapeZ = new RotateAction(Rotate.Z_AXIS, cast);
         rotCamX = new RotateAction(Rotate.X_AXIS, pCamera);
         rotCamY = new RotateAction(Rotate.Y_AXIS, pCamera);
         rotCamZ = new RotateAction(Rotate.Z_AXIS, pCamera);
@@ -140,14 +138,40 @@ public class ElevationController
     }
 
     public Group buildCast() {
-        TriangleMesh mesh = new TriangleMesh();
+        TriangleMesh Mesh = new TriangleMesh();
 
+        ElevationResult ElevationData = WeatherAndLocationManager.LoadElevationData(new LocationSearchResult("null", "null", 45.8935f, 7.3924f));
+        float[][] Elevations = ElevationData.Elevations;
+        float Delta = ElevationData.MaxElevation - ElevationData.MinElevation;
+
+        float VertexOffset = (Elevations.length - 1) * 0.5f * VertexSpacing;
+
+        for (int y = 0; y < Elevations.length; y++)
+        {
+            for (int x = 0; x < Elevations[y].length; x++)
+            {
+                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*250f, y * VertexSpacing - VertexOffset);
+            }
+        }
+
+        for (int y = 0; y < Elevations.length - 1; y++)
+        {
+            for (int x = 0; x < Elevations[y].length - 1; x++)
+            {
+                int Index = y * Elevations[y].length + x;
+                Mesh.getFaces().addAll(Index, 0, Index + Elevations[y].length, 0, Index + 1, 0);
+                Mesh.getFaces().addAll(Index + 1, 0, Index + Elevations[y].length, 0, Index + Elevations[y].length + 1, 0);
+            }
+        }
+        
+        Mesh.getTexCoords().addAll(0f,0f);
+
+        /*        
         // Vertex coordinates
         float h = 210;    // Height (Y)
         float w = 245;    // Width (X)
         float d = 125;    // Depth (Z)
-
-         mesh.getPoints().addAll(
+        mesh.getPoints().addAll(
             0,      -h / 2,   0,        // 0
             w / 2,  h / 2,    d / 2,    // 1
             w / 2,  h / 2,    -d / 2,   // 2
@@ -168,7 +192,6 @@ public class ElevationController
                 0.740f, 0.643f,     // 9
                 0.740f, 0.420f      // 10      
         );
-
         mesh.getFaces().addAll(
                 0, 0, 3, 5, 2, 6, // Front face
                 0, 0, 2, 2, 1, 3, // Right face
@@ -177,23 +200,27 @@ public class ElevationController
                 2, 9, 3, 8, 4, 7, // Bottom face
                 2, 9, 4, 7, 1, 10 // Bottom face
         );
+        */
 
         PhongMaterial material = new PhongMaterial();
         //material.setDiffuseMap(new Image("images/buildings1.png"));
-        material = new PhongMaterial(Color.YELLOWGREEN);
+        material = new PhongMaterial(Color.GRAY);
+        material.setSpecularColor(Color.WHITE);
 
-        pyramid = new MeshView(mesh);
-        pyramid.setDrawMode(DrawMode.FILL);
-        
-        pyramid.setMaterial(material);
-        //pyramid.setCullFace(CullFace.BACK);
+        MapMesh = new MeshView(Mesh);
+        MapMesh.setDrawMode(DrawMode.FILL);        
+        MapMesh.setMaterial(material);
+        MapMesh.setCullFace(CullFace.NONE);
 
         AmbientLight al = new AmbientLight();
-        al.setColor(Color.LIGHTGRAY);
-
-        // Create a group that will hold the box and cylinder        
+        al.setColor(Color.WHITE);
+        
+        PointLight pl = new PointLight(Color.BLUE);
+        pl.setTranslateX(50);
+        pl.setTranslateY(-225);  
+       
         Group group = new Group();
-        group.getChildren().addAll(pyramid, al);
+        group.getChildren().addAll(MapMesh, al, pl);
 
         return group;
     }
@@ -220,15 +247,15 @@ public class ElevationController
                 optCamera, optShape, cbxWireframe);
         
         // Add event handlers
-        btnX.setOnAction(rotShapeX);
-        btnY.setOnAction(rotShapeY);
-        btnZ.setOnAction(rotShapeZ);
+        btnX.setOnAction(rotCamX);
+        btnY.setOnAction(rotCamY);
+        btnZ.setOnAction(rotCamZ);
 
-        optShape.setOnAction((ActionEvent event) -> {
-            btnX.setOnAction(rotShapeX);
-            btnY.setOnAction(rotShapeY);
-            btnZ.setOnAction(rotShapeZ);
-        });
+        //optShape.setOnAction((ActionEvent event) -> {
+        //    btnX.setOnAction(rotShapeX);
+        //    btnY.setOnAction(rotShapeY);
+        //    btnZ.setOnAction(rotShapeZ);
+        //});
         optCamera.setOnAction((ActionEvent event) -> {
             btnX.setOnAction(rotCamX);
             btnY.setOnAction(rotCamY);
@@ -244,9 +271,9 @@ public class ElevationController
 
         cbxWireframe.setOnAction((ActionEvent event) -> {
             if (cbxWireframe.isSelected()) {
-                pyramid.setDrawMode(DrawMode.LINE);
+                MapMesh.setDrawMode(DrawMode.LINE);
             } else {
-                pyramid.setDrawMode(DrawMode.FILL);
+                MapMesh.setDrawMode(DrawMode.FILL);
             }
         });
 
