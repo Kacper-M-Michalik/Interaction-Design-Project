@@ -10,11 +10,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -57,13 +56,18 @@ public class DetailedController {
     @FXML
     private Button button_14;
     @FXML
+    private ButtonBar button_bar;
+    @FXML
     private ScrollBar scroll_bar;
+    @FXML
+    private ScrollPane scroll_pane;
 
 
     @FXML
     private void initialize() throws IOException {
         labelButtons();
-        // setScrollBar();
+        //setScrollBar();
+        setScrollPane();
 
         sb = new SearchBar(searchBar, favouriteBox);
         screen.requestFocus();
@@ -97,119 +101,146 @@ public class DetailedController {
     @FXML
     private void labelButtons(){
         Format f = new SimpleDateFormat("EEEE");
-        String dayOfWeek = f.format(new Date());
+        String dayOfWeek = (f.format(new Date())).substring(0,3);
         button_current.setText(dayOfWeek);
 
-        if (dayOfWeek.equals("Monday")) {
-            button_next.setText("Tuesday");
-            button_3.setText("Wednesday");
-            button_4.setText("Thursday");
-            button_5.setText("Friday");
-            button_6.setText("Saturday");
-            button_7.setText("Sunday");
-            button_8.setText("Monday");
-            button_9.setText("Tuesday");
-            button_10.setText("Wednesday");
-            button_11.setText("Thursday");
-            button_12.setText("Friday");
-            button_13.setText("Saturday");
-            button_14.setText("Sunday");
+        if (dayOfWeek.equals("Mon")) {
+            button_next.setText("Tue");
+            button_3.setText("Wed");
+            button_4.setText("Thu");
+            button_5.setText("Fri");
+            button_6.setText("Sat");
+            button_7.setText("Sun");
+            button_8.setText("Mon");
+            button_9.setText("Tue");
+            button_10.setText("Wed");
+            button_11.setText("Thu");
+            button_12.setText("Fri");
+            button_13.setText("Sat");
+            button_14.setText("Sun");
         }
-        if (dayOfWeek.equals("Tuesday")) {
-            button_next.setText("Wednesday");
-            button_3.setText("Thursday");
-            button_4.setText("Friday");
-            button_5.setText("Saturday");
-            button_6.setText("Sunday");
-            button_7.setText("Monday");
-            button_8.setText("Tuesday");
-            button_9.setText("Wednesday");
-            button_10.setText("Thursday");
-            button_11.setText("Friday");
-            button_12.setText("Saturday");
-            button_13.setText("Sunday");
-            button_14.setText("Monday");
+        if (dayOfWeek.equals("Tue")) {
+            button_next.setText("Wed");
+            button_3.setText("Thu");
+            button_4.setText("Fri");
+            button_5.setText("Sat");
+            button_6.setText("Sun");
+            button_7.setText("Mon");
+            button_8.setText("Tue");
+            button_9.setText("Wed");
+            button_10.setText("Thu");
+            button_11.setText("Fri");
+            button_12.setText("Sat");
+            button_13.setText("Sun");
+            button_14.setText("Mon");
         }
-        if (dayOfWeek.equals("Wednesday")) {
-            button_next.setText("Thursday");
-            button_3.setText("Friday");
-            button_4.setText("Saturday");
-            button_5.setText("Sunday");
-            button_6.setText("Monday");
-            button_7.setText("Tuesday");
-            button_8.setText("Wednesday");
-            button_9.setText("Thursday");
-            button_10.setText("Friday");
-            button_11.setText("Saturday");
-            button_12.setText("Sunday");
-            button_13.setText("Monday");
-            button_14.setText("Tuesday");
+        if (dayOfWeek.equals("Wed")) {
+            button_next.setText("Thu");
+            button_3.setText("Fri");
+            button_4.setText("Sat");
+            button_5.setText("Sun");
+            button_6.setText("Mon");
+            button_7.setText("Tue");
+            button_8.setText("Wed");
+            button_9.setText("Thu");
+            button_10.setText("Fri");
+            button_11.setText("Sat");
+            button_12.setText("Sun");
+            button_13.setText("Mon");
+            button_14.setText("Tue");
         }
-        if (dayOfWeek.equals("Thursday")) {
-            button_next.setText("Friday");
-            button_3.setText("Saturday");
-            button_4.setText("Sunday");
-            button_5.setText("Monday");
-            button_6.setText("Tuesday");
-            button_7.setText("Wednesday");
-            button_8.setText("Thursday");
-            button_9.setText("Friday");
-            button_10.setText("Saturday");
-            button_11.setText("Sunday");
-            button_12.setText("Monday");
-            button_13.setText("Tuesday");
-            button_14.setText("Wednesday");
+        if (dayOfWeek.equals("Thu")) {
+            button_next.setText("Fri");
+            button_3.setText("Sat");
+            button_4.setText("Sun");
+            button_5.setText("Mon");
+            button_6.setText("Tue");
+            button_7.setText("Wed");
+            button_8.setText("Thu");
+            button_9.setText("Fri");
+            button_10.setText("Sat");
+            button_11.setText("Sun");
+            button_12.setText("Mon");
+            button_13.setText("Tue");
+            button_14.setText("Wed");
         }
-        if (dayOfWeek.equals("Friday")) {
-            button_next.setText("Saturday");
-            button_3.setText("Sunday");
-            button_4.setText("Monday");
-            button_5.setText("Tuesday");
-            button_6.setText("Wednesday");
-            button_7.setText("Thursday");
-            button_8.setText("Friday");
-            button_9.setText("Saturday");
-            button_10.setText("Sunday");
-            button_11.setText("Monday");
-            button_12.setText("Tuesday");
-            button_13.setText("Wednesday");
-            button_14.setText("Thursday");
+        if (dayOfWeek.equals("Fri")) {
+            button_next.setText("Sat");
+            button_3.setText("Sun");
+            button_4.setText("Mon");
+            button_5.setText("Tue");
+            button_6.setText("Wed");
+            button_7.setText("Thu");
+            button_8.setText("Fri");
+            button_9.setText("Sat");
+            button_10.setText("Sun");
+            button_11.setText("Mon");
+            button_12.setText("Tue");
+            button_13.setText("Wed");
+            button_14.setText("Thu");
         }
-        if (dayOfWeek.equals("Saturday")) {
-            button_next.setText("Sunday");
-            button_3.setText("Monday");
-            button_4.setText("Tuesday");
-            button_5.setText("Wednesday");
-            button_6.setText("Thursday");
-            button_7.setText("Friday");
-            button_8.setText("Saturday");
-            button_9.setText("Sunday");
-            button_10.setText("Monday");
-            button_11.setText("Tuesday");
-            button_12.setText("Wednesday");
-            button_13.setText("Thursday");
-            button_14.setText("Friday");
+        if (dayOfWeek.equals("Sat")) {
+            button_next.setText("Sun");
+            button_3.setText("Mon");
+            button_4.setText("Tue");
+            button_5.setText("Wed");
+            button_6.setText("Thu");
+            button_7.setText("Fri");
+            button_8.setText("Sat");
+            button_9.setText("Sun");
+            button_10.setText("Mon");
+            button_11.setText("Tue");
+            button_12.setText("Wed");
+            button_13.setText("Thu");
+            button_14.setText("Fri");
         }
-        if (dayOfWeek.equals("Sunday")) {
-            button_next.setText("Monday");
-            button_3.setText("Tuesday");
-            button_4.setText("Wednesday");
-            button_5.setText("Thursday");
-            button_6.setText("Friday");
-            button_7.setText("Saturday");
-            button_8.setText("Sunday");
-            button_9.setText("Monday");
-            button_10.setText("Tuesday");
-            button_11.setText("Wednesday");
-            button_12.setText("Thursday");
-            button_13.setText("Friday");
-            button_14.setText("Saturday");
+        if (dayOfWeek.equals("Sun")) {
+            button_next.setText("Mon");
+            button_3.setText("Tue");
+            button_4.setText("Wed");
+            button_5.setText("Thu");
+            button_6.setText("Fri");
+            button_7.setText("Sat");
+            button_8.setText("Sun");
+            button_9.setText("Mon");
+            button_10.setText("Tue");
+            button_11.setText("Wed");
+            button_12.setText("Thu");
+            button_13.setText("Fri");
+            button_14.setText("Sat");
         }
 
     }
 
     @FXML
+    // want scroll bar to just scroll button bar, not whole screen
     private void setScrollBar() {
+        scroll_bar.setLayoutX(button_bar.getWidth()-scroll_bar.getWidth());
 
+        // add listener to scroll bar
+        // x-coordinate of vbox is changed as value of scroll bar is changed
+        scroll_bar.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                button_bar.setLayoutX(-new_val.doubleValue());
+            }
+        });
+    }
+
+    // try making a scroll pane that just includes the button bar, and use scroll bar in a similar way to video
+    // at the moment vertical scroll bar appears but can only scroll up/down with mouse :/
+    @FXML
+    private void setScrollPane() {
+        scroll_pane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scroll_pane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        // add listener to scroll pane
+        // x-coordinate of button bar is changed as value of scroll pane is changed
+        scroll_pane.hvalueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                scroll_pane.setLayoutX(-new_val.doubleValue());
+            }
+        });
     }
 }

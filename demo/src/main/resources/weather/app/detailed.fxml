@@ -6,9 +6,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="screen" maxHeight="720.0" maxWidth="400.0" minHeight="720.0" minWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.DetailedController">
+<VBox fx:id="screen" maxHeight="720.0" maxWidth="400.0" minHeight="720.0" minWidth="400.0" prefHeight="720.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.DetailedController">
    <children>
-      <BorderPane prefHeight="720.0" prefWidth="480.0">
+      <BorderPane maxHeight="720.0" maxWidth="400.0" minHeight="720.0" minWidth="400.0" prefHeight="720.0" prefWidth="400.0">
          <top>
             <HBox prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #86cddd;" BorderPane.alignment="CENTER">
                <children>
@@ -79,32 +79,33 @@
          <center>
             <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <top>
-                  <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <buttons>
-                      <Button fx:id="button_current" mnemonicParsing="false" />
-                        <Button fx:id="button_next" mnemonicParsing="false" />
-                        <Button fx:id="button_3" mnemonicParsing="false" />
-                        <Button fx:id="button_4" mnemonicParsing="false" />
-                        <Button fx:id="button_5" mnemonicParsing="false" />
-                        <Button fx:id="button_6" mnemonicParsing="false" />
-                        <Button fx:id="button_7" mnemonicParsing="false" />
-                        <Button fx:id="button_8" mnemonicParsing="false" />
-                        <Button fx:id="button_9" mnemonicParsing="false" />
-                        <Button fx:id="button_10" mnemonicParsing="false" />
-                        <Button fx:id="button_11" mnemonicParsing="false" />
-                        <Button fx:id="button_12" mnemonicParsing="false" />
-                        <Button fx:id="button_13" mnemonicParsing="false" />
-                        <Button fx:id="button_14" mnemonicParsing="false" />
-                    </buttons>
-                  </ButtonBar>
+                  <ScrollPane fx:id="scroll_pane" prefHeight="75.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="76.0" prefWidth="1130.0">
+                           <children>
+                              <ButtonBar fx:id="button_bar" prefHeight="40.0">
+                                <buttons>
+                                  <Button fx:id="button_current" mnemonicParsing="false" />
+                                    <Button fx:id="button_next" mnemonicParsing="false" />
+                                    <Button fx:id="button_3" mnemonicParsing="false" />
+                                    <Button fx:id="button_4" mnemonicParsing="false" />
+                                    <Button fx:id="button_5" mnemonicParsing="false" />
+                                    <Button fx:id="button_6" mnemonicParsing="false" />
+                                    <Button fx:id="button_7" mnemonicParsing="false" />
+                                    <Button fx:id="button_8" mnemonicParsing="false" />
+                                    <Button fx:id="button_9" mnemonicParsing="false" />
+                                    <Button fx:id="button_10" mnemonicParsing="false" />
+                                    <Button fx:id="button_11" mnemonicParsing="false" />
+                                    <Button fx:id="button_12" mnemonicParsing="false" />
+                                    <Button fx:id="button_13" mnemonicParsing="false" />
+                                    <Button fx:id="button_14" mnemonicParsing="false" />
+                                </buttons>
+                              </ButtonBar>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </top>
-               <center>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <top>
-                        <ScrollBar fx:id="scroll_bar" BorderPane.alignment="CENTER" />
-                     </top>
-                  </BorderPane>
-               </center>
             </BorderPane>
          </center>
       </BorderPane>
