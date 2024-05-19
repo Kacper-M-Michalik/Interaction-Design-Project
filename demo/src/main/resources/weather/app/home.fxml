@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
+<VBox fx:id="screen" maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
    <children>
       <BorderPane prefHeight="720.0" prefWidth="480.0">
          <top>
@@ -15,8 +15,8 @@
                <children>
                   <Pane prefHeight="46.0" prefWidth="400.0">
                      <children>
-                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="10.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
-                        <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="353.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                        <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
                      </children></Pane>
                </children>
             </HBox>

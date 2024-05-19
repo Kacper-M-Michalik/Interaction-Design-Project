@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.MapController">
+<VBox fx:id="screen" maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.MapController">
     <children>
         <BorderPane prefHeight="720.0" prefWidth="480.0">
             <top>
-                <HBox prefHeight="35.0" prefWidth="480.0" BorderPane.alignment="CENTER">
+                <HBox prefHeight="45.0" prefWidth="400.0" style="-fx-background-color: #86cddd;" BorderPane.alignment="CENTER">
                     <children>
-                        <Pane prefHeight="35.0" prefWidth="342.0" />
-                        <Pane prefHeight="35.0" prefWidth="138.0" />
+                        <Pane prefHeight="46.0" prefWidth="400.0">
+                            <children>
+                                <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                                <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
+                            </children></Pane>
                     </children>
                 </HBox>
             </top>

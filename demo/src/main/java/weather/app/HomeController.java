@@ -4,23 +4,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
-import javafx.scene.input.InputMethodRequests;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.ComboBox;
 
 public class HomeController {
+    @FXML
+    private VBox screen;
     @FXML
     private ComboBox<String> searchBar;
     @FXML
     private CheckBox favouriteBox;
     @FXML
     private Text temperature, rainfall, visibility, snowfall, snowDepth, freezingHeight, apparentTemp;
+    private SearchBar sb;
 
     void update() {
         temperature.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetCurrentTemperature()));
@@ -35,73 +34,21 @@ public class HomeController {
     @FXML
     private void initialize() {
         update();
-        showFavouriteAndRecentLocations();
-    }
-
-    private void showFavouriteAndRecentLocations(){
-        searchBar.getItems().setAll(UserProfile.getFavourites());
-        searchBar.getItems().addAll(UserProfile.getRecents());
+        sb = new SearchBar(searchBar, favouriteBox);
+        screen.requestFocus();
     }
 
     @FXML
     private void onLocationSwitchRequest(){
-        String searchValue = searchBar.getValue();
-        if (searchValue.equals(UserProfile.getCurrentLocation())){
-            return;
+        boolean switchedLocation = sb.requestLocationSwitch();
+        if (switchedLocation){
+            update();
         }
-        if (searchValue.isEmpty()){
-            showFavouriteAndRecentLocations();
-            return;
-        }
-        LocationSearchResult[] possibleLocations = WeatherAndLocationManager.SearchLocations(searchValue);
-        boolean locationChanged = false;
-        for (LocationSearchResult l: possibleLocations){
-            if (l.toString().equalsIgnoreCase(searchValue)){
-                locationChanged = true;
-                changeLocation(l);
-                break;
-            }
-        }
-        if (!locationChanged){
-            if (possibleLocations.length > 0){
-                updateSearchValues(possibleLocations);
-            }
-            else {
-                showFavouriteAndRecentLocations();
-            }
-            searchBar.show();
-        }
-
-    }
-
-    private void changeLocation(LocationSearchResult newLocation){
-        WeatherAndLocationManager.LoadWeatherData(newLocation);
-        update();
-        UserProfile.updateRecents(newLocation.toString());
-        UserProfile.setCurrentLocation(newLocation);
-        favouriteBox.setSelected(UserProfile.isFavourite());
-        searchBar.setPromptText(newLocation.toString());
-    }
-
-    private void updateSearchValues(LocationSearchResult[] possibleLocations){
-        List<String> stringLocations = new ArrayList<>();
-        for (LocationSearchResult l: possibleLocations){
-            stringLocations.add(l.toString());
-            if (stringLocations.size() >= 8){
-                break;
-            }
-        }
-        searchBar.getItems().setAll(stringLocations);
     }
 
     @FXML
     private void updateFavourites(){
-        if (favouriteBox.isSelected()){
-            UserProfile.addToFavourites(UserProfile.getCurrentLocation());
-        }
-        else{
-            UserProfile.removeFromFavourites(UserProfile.getCurrentLocation());
-        }
+        sb.updateFavourites();
     }
 
     @FXML

@@ -4,9 +4,9 @@ import java.util.*;
 
 public class UserProfile {
     private static final int maxFavourites = 4, maxRecents = 4;
-    private static final List<String>  favourites= new ArrayList<>();
+    private static final List<String>  favourites = new ArrayList<>();
     private static final Queue<String> recents = new LinkedList<>();
-    private static String currentLocation = "";
+    private static String currentLocation = "Cambridge GB";
 
 
     public static void setCurrentLocation(LocationSearchResult place){
@@ -15,6 +15,7 @@ public class UserProfile {
 
     public static void setCurrentLocation(String placeName){
         currentLocation = placeName;
+        updateRecents();
     }
 
     public static String getCurrentLocation(){
@@ -25,24 +26,26 @@ public class UserProfile {
         return favourites.contains(currentLocation);
     }
 
-    public static boolean addToFavourites(String placeName){
+    public static boolean addToFavourites(){
         if (favourites.size() > maxFavourites){
             return false;
         }
-        if (!favourites.contains(placeName)) {
-            favourites.add(placeName);
+        if (!favourites.contains(currentLocation)) {
+            favourites.add(currentLocation);
         }
         recents.removeIf(favourites::contains);
         return true;
     }
 
     public static boolean removeFromFavourites(String placeName) {
-        return favourites.remove(placeName);
+        boolean success = favourites.remove(placeName);
+        updateRecents();
+        return success;
     }
 
-    public static void updateRecents(String placeName){
-        recents.remove(placeName);
-        recents.add(placeName);
+    private static void updateRecents(){
+        recents.remove(currentLocation);
+        recents.add(currentLocation);
         recents.removeIf(favourites::contains);
         if (recents.size() > maxRecents){
             recents.remove();
