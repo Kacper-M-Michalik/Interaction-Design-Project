@@ -25,7 +25,7 @@ public class SearchBar {
 
     public boolean requestLocationSwitch(){
         String searchValue = searchBar.getValue();
-        if (searchValue.equals(UserProfile.getCurrentLocation()) || searchValue.isEmpty()){
+        if (searchValue == null || searchValue.isEmpty() || searchValue.equals(UserProfile.getCurrentLocation())){
             searchBar.setValue("");
             showFavouriteAndRecentLocations();
             return false;
