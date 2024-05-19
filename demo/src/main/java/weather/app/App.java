@@ -27,6 +27,7 @@ public class App extends Application {
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+        scene.setRoot(loadFXML("home")); // intentional, stops focus from being on search bar
     }
 
     static void setRoot(String fxml) throws IOException {

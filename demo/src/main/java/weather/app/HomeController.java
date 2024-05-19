@@ -43,6 +43,7 @@ public class HomeController {
         boolean switchedLocation = sb.requestLocationSwitch();
         if (switchedLocation){
             update();
+            screen.requestFocus();
         }
     }
 

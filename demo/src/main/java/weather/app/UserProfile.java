@@ -5,7 +5,7 @@ import java.util.*;
 public class UserProfile {
     private static final int maxFavourites = 4, maxRecents = 4;
     private static final List<String>  favourites = new ArrayList<>();
-    private static final Queue<String> recents = new LinkedList<>();
+    private static final Deque<String> recents = new LinkedList<>();
     private static String currentLocation = "Cambridge GB";
 
 
@@ -27,7 +27,7 @@ public class UserProfile {
     }
 
     public static boolean addToFavourites(){
-        if (favourites.size() > maxFavourites){
+        if (favourites.size() >= maxFavourites){
             return false;
         }
         if (!favourites.contains(currentLocation)) {
@@ -45,10 +45,10 @@ public class UserProfile {
 
     private static void updateRecents(){
         recents.remove(currentLocation);
-        recents.add(currentLocation);
+        recents.addFirst(currentLocation);
         recents.removeIf(favourites::contains);
         if (recents.size() > maxRecents){
-            recents.remove();
+            recents.removeLast();
         }
     }
 
@@ -56,11 +56,7 @@ public class UserProfile {
         return favourites;
     }
 
-
-    public static Queue<String> getRecents(){
+    public static Deque<String> getRecents(){
         return recents;
     }
-
-
-
 }

@@ -76,11 +76,10 @@ public class DetailedController {
     @FXML
     private void onLocationSwitchRequest(){
         boolean switchedLocation = sb.requestLocationSwitch();
-        /*
         if (switchedLocation){
-            update();
+            //update();
+            screen.requestFocus();
         }
-        */
     }
 
     @FXML

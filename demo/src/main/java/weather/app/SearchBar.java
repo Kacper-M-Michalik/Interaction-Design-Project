@@ -1,5 +1,6 @@
 package weather.app;
 
+import javafx.application.Platform;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 
@@ -19,14 +20,16 @@ public class SearchBar {
     }
 
     private void showFavouriteAndRecentLocations(){
-        searchBar.getItems().setAll(UserProfile.getFavourites());
-        searchBar.getItems().addAll(UserProfile.getRecents());
+        Platform.runLater(() -> {
+            searchBar.getItems().setAll(UserProfile.getFavourites());
+            searchBar.getItems().addAll(UserProfile.getRecents());
+        });
     }
 
     public boolean requestLocationSwitch(){
         String searchValue = searchBar.getValue();
         if (searchValue == null || searchValue.isEmpty() || searchValue.equals(UserProfile.getCurrentLocation())){
-            searchBar.setValue("");
+            Platform.runLater(() -> searchBar.setValue(""));
             showFavouriteAndRecentLocations();
             return false;
         }
@@ -39,26 +42,27 @@ public class SearchBar {
                 break;
             }
         }
-        if (locationChanged){
-            searchBar.hide();
-            showFavouriteAndRecentLocations();
-            return true;
+        if (!locationChanged) {
+            if (possibleLocations.length > 0) {
+                updateSearchValues(possibleLocations);
+            } else {
+                showFavouriteAndRecentLocations();
+            }
+            searchBar.show();
         }
-        if (possibleLocations.length > 0){
-            updateSearchValues(possibleLocations);
-        }
-        else {
-            showFavouriteAndRecentLocations();
-        }
-        searchBar.show();
-        return false;
+        return locationChanged;
     }
 
     private void changeLocation(LocationSearchResult newLocation){
         WeatherAndLocationManager.LoadWeatherData(newLocation);
         UserProfile.setCurrentLocation(newLocation);
         favouriteBox.setSelected(UserProfile.isFavourite());
-        searchBar.setPromptText(newLocation.toString());
+        Platform.runLater(() -> {
+            searchBar.setPromptText(newLocation.toString());
+            searchBar.setValue("");
+            searchBar.hide();
+        });
+        showFavouriteAndRecentLocations();
     }
 
     private void updateSearchValues(LocationSearchResult[] possibleLocations){
@@ -69,7 +73,7 @@ public class SearchBar {
                 break;
             }
         }
-        searchBar.getItems().setAll(stringLocations);
+        Platform.runLater(() -> searchBar.getItems().setAll(stringLocations));
     }
 
     public void updateFavourites(){
