@@ -33,6 +33,7 @@ public class SearchBar {
             showFavouriteAndRecentLocations();
             return false;
         }
+        searchValue = searchValue.replaceAll(", ", " ");
         if (handleLongLat(searchValue)){
             return true;
         }
