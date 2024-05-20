@@ -59,10 +59,14 @@ public class SearchBar {
 
     private boolean handleLongLat(String val){
         String[] words = val.split(" ");
-        if (words.length > 1){
+        if (words.length == 2){
             try {
                 float lat = Float.parseFloat(words[0]);
                 float lon = Float.parseFloat(words[1]);
+                if (Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+                    // Invalid latitude or longitude
+                    return false;
+                }
                 LocationSearchResult newLocation = new LocationSearchResult(Float.toString(lat), Float.toString(lon), lat, lon);
                 changeLocation(newLocation);
                 return true;
