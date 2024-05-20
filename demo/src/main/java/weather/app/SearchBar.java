@@ -33,6 +33,9 @@ public class SearchBar {
             showFavouriteAndRecentLocations();
             return false;
         }
+        if (handleLongLat(searchValue)){
+            return true;
+        }
         LocationSearchResult[] possibleLocations = WeatherAndLocationManager.SearchLocations(searchValue);
         boolean locationChanged = false;
         for (LocationSearchResult l: possibleLocations){
@@ -51,6 +54,23 @@ public class SearchBar {
             searchBar.show();
         }
         return locationChanged;
+    }
+
+    private boolean handleLongLat(String val){
+        String[] words = val.split(" ");
+        if (words.length > 1){
+            try {
+                float lat = Float.parseFloat(words[0]);
+                float lon = Float.parseFloat(words[1]);
+                LocationSearchResult newLocation = new LocationSearchResult(Float.toString(lat), Float.toString(lon), lat, lon);
+                changeLocation(newLocation);
+                return true;
+            }
+            catch (NumberFormatException e){
+                return false;
+            }
+        }
+        return false;
     }
 
     private void changeLocation(LocationSearchResult newLocation){
