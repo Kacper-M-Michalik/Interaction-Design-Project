@@ -236,14 +236,14 @@ public class DetailedController {
     private void createTemperatures() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,1, 25);
+        createRow(datas, temperature, units,1, hoursLeft() + 2);
     }
 
     @FXML
     private void createRainfall() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 1, 25);
+        createRow(datas, rainfall, units, 1, hoursLeft() + 2);
     }
 
     @FXML
@@ -255,35 +255,35 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 1, 25);
+        createRow(datas, visibility, units, 1, hoursLeft() + 2);
     }
 
     @FXML
     private void createSnowfall() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 1, 25);
+        createRow(datas, snowfall, units, 1, hoursLeft() + 2);
     }
 
     @FXML
     private void createSnowDepths() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 1, 25);
+        createRow(datas, snowdepth, units, 1, hoursLeft() + 2);
     }
 
     @FXML
     private void createFreezingLevels() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetFreezingHeights();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("freezing_level_height");
-        createRow(datas, freezing_level, units, 1, 25);
+        createRow(datas, freezing_level, units, 1, hoursLeft() + 2);
     }
 
     @FXML
     private void createApparentTemps() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetApparentTemps();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("apparent_temperature");
-        createRow(datas, apparent_temp, units, 1, 25);
+        createRow(datas, apparent_temp, units, 1, hoursLeft() + 2);
     }
 
     private int hoursLeft() {
@@ -339,11 +339,12 @@ public class DetailedController {
         createRow(datas, temperature, units,25, 49);
     }
 
+
     @FXML
     private void createRainfall2() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 25, 49);
+        createRow(datas, rainfall, units, hoursLeft() + 2, hoursLeft() + 26);
     }
 
     @FXML
@@ -355,21 +356,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 25, 49);
+        createRow(datas, visibility, units, hoursLeft() + 2, hoursLeft() + 26);
     }
 
     @FXML
     private void createSnowfall2() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 25, 49);
+        createRow(datas, snowfall, units, hoursLeft() + 2, hoursLeft() + 26);
     }
 
     @FXML
     private void createSnowDepths2() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 25, 49);
+        createRow(datas, snowdepth, units, hoursLeft() + 2, hoursLeft() + 26);
     }
 
     @FXML
@@ -395,14 +396,14 @@ public class DetailedController {
     private void createTemperatures3() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,49, 73);
+        createRow(datas, temperature, units,hoursLeft() + 26, hoursLeft() + 50);
     }
 
     @FXML
     private void createRainfall3() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 49, 73);
+        createRow(datas, rainfall, units, hoursLeft() + 26, hoursLeft() + 50);
     }
 
     @FXML
@@ -414,21 +415,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 49, 73);
+        createRow(datas, visibility, units, hoursLeft() + 26, hoursLeft() + 50);
     }
 
     @FXML
     private void createSnowfall3() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 49, 73);
+        createRow(datas, snowfall, units, hoursLeft() + 26, hoursLeft() + 50);
     }
 
     @FXML
     private void createSnowDepths3() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 49, 73);
+        createRow(datas, snowdepth, units, hoursLeft() + 26, hoursLeft() + 50);
     }
 
     @FXML
@@ -453,14 +454,14 @@ public class DetailedController {
     private void createTemperatures4() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,73, 97);
+        createRow(datas, temperature, units,hoursLeft() + 50, hoursLeft() + 74);
     }
 
     @FXML
     private void createRainfall4() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 73, 97);
+        createRow(datas, rainfall, units, hoursLeft() + 50, hoursLeft() + 74);
     }
 
     @FXML
@@ -472,21 +473,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 73, 97);
+        createRow(datas, visibility, units, hoursLeft() + 50, hoursLeft() + 74);
     }
 
     @FXML
     private void createSnowfall4() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 73, 97);
+        createRow(datas, snowfall, units, hoursLeft() + 50, hoursLeft() + 74);
     }
 
     @FXML
     private void createSnowDepths4() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 73, 97);
+        createRow(datas, snowdepth, units, hoursLeft() + 50, hoursLeft() + 74);
     }
 
     @FXML
@@ -512,14 +513,14 @@ public class DetailedController {
     private void createTemperatures5() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,97, 121);
+        createRow(datas, temperature, units,hoursLeft() + 74, hoursLeft() + 100);
     }
 
     @FXML
     private void createRainfall5() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 97, 121);
+        createRow(datas, rainfall, units, hoursLeft() + 74, hoursLeft() + 100);
     }
 
     @FXML
@@ -531,21 +532,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 97, 121);
+        createRow(datas, visibility, units, hoursLeft() + 74, hoursLeft() + 100);
     }
 
     @FXML
     private void createSnowfall5() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 97, 121);
+        createRow(datas, snowfall, units, hoursLeft() + 74, hoursLeft() + 100);
     }
 
     @FXML
     private void createSnowDepth5() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 97, 121);
+        createRow(datas, snowdepth, units, hoursLeft() + 74, hoursLeft() + 100);
     }
 
     @FXML
@@ -571,14 +572,14 @@ public class DetailedController {
     private void createTemperatures6() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,121, 145);
+        createRow(datas, temperature, units,hoursLeft() + 100, hoursLeft() + 124);
     }
 
     @FXML
     private void createRainfall6() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 121, 145);
+        createRow(datas, rainfall, units, hoursLeft() + 100, hoursLeft() + 124);
     }
 
     @FXML
@@ -590,21 +591,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 121, 145);
+        createRow(datas, visibility, units, hoursLeft() + 100, hoursLeft() + 124);
     }
 
     @FXML
     private void createSnowfall6() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 121, 145);
+        createRow(datas, snowfall, units, hoursLeft() + 100, hoursLeft() + 124);
     }
 
     @FXML
     private void createSnowDepths6() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 121, 145);
+        createRow(datas, snowdepth, units, hoursLeft() + 100, hoursLeft() + 124);
     }
 
     @FXML
@@ -630,14 +631,14 @@ public class DetailedController {
     private void createTemperatures7() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, units,121, 145);
+        createRow(datas, temperature, units,hoursLeft() + 124, hoursLeft() + 148);
     }
 
     @FXML
     private void createRainfall7() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
-        createRow(datas, rainfall, units, 121, 145);
+        createRow(datas, rainfall, units, hoursLeft() + 124, hoursLeft() + 148);
     }
 
     @FXML
@@ -649,21 +650,21 @@ public class DetailedController {
         }
 
         String units = "km";
-        createRow(datas, visibility, units, 121, 145);
+        createRow(datas, visibility, units, hoursLeft() + 124, hoursLeft() + 148);
     }
 
     @FXML
     private void createSnowfall7() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
-        createRow(datas, snowfall, units, 121, 145);
+        createRow(datas, snowfall, units, hoursLeft() + 124, hoursLeft() + 148);
     }
 
     @FXML
     private void createSnowDepths7() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
-        createRow(datas, snowdepth, units, 121, 145);
+        createRow(datas, snowdepth, units, hoursLeft() + 124, hoursLeft() + 148);
     }
 
     @FXML
