@@ -74,9 +74,13 @@ public class ElevationController
     
     float VertexSpacing = 20f;
 
-    boolean IsDragging;
+    boolean SkippedFirstClick = false;
+    boolean IsDragging = false;
     double PreviousX = 0;
     double PreviousY = 0;
+    double Theta = 0;
+    double Gamma = 80;
+    double R = 500;
     
     public void start(Pane parentNode) {
 
@@ -122,10 +126,19 @@ public class ElevationController
 
         Stage MainStage = App.GetMainStage();
         MainStage.addEventHandler(ScrollEvent.SCROLL, event -> {
-            pCamera.getTransforms().addAll(new Translate(0f, 0f, (float)event.getDeltaY()));
+            //pCamera.getTransforms().addAll(new Translate(0f, 0f, (float)event.getDeltaY()));
+            R -= (double)event.getDeltaY();
+            if (R < 150) R = 150;
+
+            RotateCamera();
         });
         
         MainStage.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> {
+            if (!SkippedFirstClick){
+                SkippedFirstClick = true;
+                return;
+            }
+
             IsDragging = true;
             PreviousX = event.getScreenX();
             PreviousY = event.getSceneY();
@@ -135,16 +148,28 @@ public class ElevationController
             IsDragging = false;
         });
 
-        MainStage.addEventHandler(MouseDragEvent.MOUSE_MOVED, event -> {
-            //pCamera.getTransforms().addAll(new Translate(100f,0f,0f));
+        MainStage.addEventHandler(MouseDragEvent.MOUSE_DRAGGED, event -> {
             if (IsDragging)
             {
+                double CurrentX = event.getScreenX();
+                double CurrentY = event.getScreenY();
 
+                double DeltaX = CurrentX - PreviousX;
+                double DeltaY = CurrentY - PreviousY;
+
+                Theta += DeltaX;
+                Gamma += DeltaY;
+                if (Gamma < 10) Gamma = 10;
+                if (Gamma > 80) Gamma = 80;
+
+                RotateCamera();
+
+                PreviousX = CurrentX;
+                PreviousY = CurrentY;
             }
         });
 
-
-
+        RotateCamera();
     }
 
     public Group BuildAxis(float rad, float size) {
@@ -248,7 +273,7 @@ public class ElevationController
         MapMesh = new MeshView(Mesh);
         MapMesh.setDrawMode(DrawMode.FILL);        
         MapMesh.setMaterial(Material);
-        MapMesh.setCullFace(CullFace.FRONT);
+        MapMesh.setCullFace(CullFace.NONE);
 
         AmbientLight al = new AmbientLight();
         al.setColor(Color.WHITE);
@@ -342,6 +367,44 @@ public class ElevationController
 
         return guiPane;
     }
+
+    public void RotateCamera()
+    {
+        double TR = Math.toRadians(Theta);
+        double GR = Math.toRadians(Gamma);
+
+        pCamera.setTranslateX(R * Math.cos(TR) * Math.sin(GR));
+        pCamera.setTranslateY(-R * Math.cos(GR));
+        pCamera.setTranslateZ(R * Math.sin(TR) * Math.sin(GR));
+        System.out.println("POS");
+        System.out.println(pCamera.getTranslateX());
+        System.out.println(pCamera.getTranslateY());
+        System.out.println(pCamera.getTranslateZ());
+        //lookAt(new Point3D(0, 0, 0));
+        //float test = 1;
+    }
+
+    public void lookAt(Point3D lookAtPos) 
+    {                
+        Point3D cameraPosition = new Point3D(pCamera.getTranslateX(), pCamera.getTranslateY(), pCamera.getTranslateZ());
+        Point3D camDirection = lookAtPos.subtract(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ());  
+        camDirection = camDirection.normalize();  
+    
+        double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
+        double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));  
+    
+        Rotate rx = new Rotate(xRotation, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(), Rotate.X_AXIS);  
+        Rotate ry = new Rotate(yRotation, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(),  Rotate.Y_AXIS);  
+        
+        pCamera.getTransforms().addAll( 
+            ry, rx,   
+            new Translate (  
+                cameraPosition.getX(),   
+                cameraPosition.getY(),   
+                cameraPosition.getZ()
+            )
+        );                         
+    }  
 
     public class RotateAction implements EventHandler<ActionEvent> {
 
