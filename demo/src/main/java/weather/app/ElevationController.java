@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.AmbientLight;
@@ -18,9 +19,11 @@ import javafx.scene.SubScene;
 import javafx.scene.chart.Axis;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -35,6 +38,8 @@ import javafx.scene.shape.DrawMode;
 import javafx.scene.shape.Sphere;
 import javafx.scene.shape.TriangleMesh;
 import javafx.scene.shape.VertexFormat;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -47,10 +52,14 @@ import javafx.scene.Node;
 import javafx.scene.shape.DrawMode;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import javafx.util.Duration;
+import javafx.util.Duration; 
+import javafx.scene.image.ImageView;
+
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.Flow;
+
 
 //Kacper Michalik
 public class ElevationController
@@ -64,6 +73,13 @@ public class ElevationController
     PerspectiveCamera pCamera;
     Group cast, xyzAxis;
     MeshView MapMesh;
+
+    Label LegendTitle;
+    Label CurrentVar;
+    Label MaxVar;
+    Label MinVar;
+    ImageView ColorGradientDisplay;
+    ImageView Background;
 
     int SceneW = App.ScreenWidth;
     int SceneH = App.ScreenHeight - 105; //-130
@@ -82,51 +98,51 @@ public class ElevationController
     Translate CameraOffset;
     Point3D RotateUp = Rotate.Y_AXIS;
     Point3D RotateRight = Rotate.X_AXIS;
+
+    Image TerrainTexture;
+    Image GradientTexture;
+    Image BackgroundTexture;
     
     public void start(Pane parentNode) {
 
         // Use a floawpane for the root node.
         FlowPane rootNode = new FlowPane(10, 10);
-        
         rootNode.setAlignment(Pos.CENTER);
         parentNode.getChildren().add(rootNode);
 
         pCamera = new PerspectiveCamera(true);
-        // Set the camera's rotation axis to Y axis
-        // pCamera.setRotationAxis(Rotate.Y_AXIS);
-        //pCamera.getTransforms().addAll(new Translate(0, -150, -500));
         pCamera.setFieldOfView(45);
         pCamera.setFarClip(10000);
         pCamera.setNearClip(0);
-        PrevXRotate = new Rotate(-30, 0,0,0, RotateRight);
-        //PrevXRotate = new Rotate(Gamma - 90, 0,0,0, RotateRight);
+        PrevXRotate = new Rotate(Gamma - 90, 0,0,0, RotateRight);
         PrevYRotate = new Rotate(Theta - 180, 0, 0, 0, RotateUp);
-        CameraOffset = new Translate(0, -500, -1000);
-        pCamera.getTransforms().addAll(CameraOffset, PrevXRotate);//, new Translate(-419.9878780390644, -181.17333157176452, -529.8928252273581));
+        CameraOffset = new Translate(0, 0, -R);
+        pCamera.getTransforms().addAll(PrevYRotate, PrevXRotate, CameraOffset);
+        RotateCamera();
 
         Group groupAll = new Group();
         cast = GenerateTerrain();        
         xyzAxis = (BuildAxis(1, 200));
         groupAll.getChildren().addAll(cast, xyzAxis);
-        SubScene shapesSub = new SubScene(groupAll, SceneW, SceneH, true,
-                SceneAntialiasing.DISABLED);
+        SubScene shapesSub = new SubScene(groupAll, SceneW, SceneH, true, SceneAntialiasing.DISABLED);
         shapesSub.setFill(Color.AZURE);
         shapesSub.setCamera(pCamera);
         
-        Pane gui = buildGUI(cast);
-        rootNode.getChildren().addAll(shapesSub);
-        
-        //RotateCamera();
-        
+        Pane gui = BuildGUI(cast);
+        rootNode.getChildren().addAll(shapesSub, gui);
+        gui.setTranslateX(-135);
+        gui.setTranslateY(-370);
+
         Stage MainStage = App.GetMainStage();
-        MainStage.addEventHandler(ScrollEvent.SCROLL, event -> {
+
+        shapesSub.addEventHandler(ScrollEvent.SCROLL, event -> {
             R -= (double)event.getDeltaY();
             if (R < 150) R = 150;
 
-            //RotateCamera();
+            RotateCamera();
         });
-        
-        MainStage.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> {
+
+        shapesSub.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> {
             if (!SkippedFirstClick){
                 SkippedFirstClick = true;
                 return;
@@ -137,11 +153,11 @@ public class ElevationController
             PreviousY = event.getSceneY();
         });
 
-        MainStage.addEventHandler(MouseDragEvent.MOUSE_RELEASED, event -> {
+        shapesSub.addEventHandler(MouseDragEvent.MOUSE_RELEASED, event -> {
             IsDragging = false;
         });
 
-        MainStage.addEventHandler(MouseDragEvent.MOUSE_DRAGGED, event -> {
+        shapesSub.addEventHandler(MouseDragEvent.MOUSE_DRAGGED, event -> {            
             if (IsDragging)
             {
                 double CurrentX = event.getScreenX();
@@ -154,32 +170,31 @@ public class ElevationController
                 Gamma += DeltaY;
                 if (Gamma < 10) Gamma = 10;
                 if (Gamma > 80) Gamma = 80;
-
-                //RotateCamera();
+    
+                RotateCamera();
 
                 PreviousX = CurrentX;
                 PreviousY = CurrentY;
             }
         });
-
     }
 
-    public Group BuildAxis(float rad, float size) {
-        Cylinder xAxis = new Cylinder(rad, size);
+    public Group BuildAxis(float Rad, float Size) {
+        Cylinder xAxis = new Cylinder(Rad, Size);
         xAxis.setMaterial(new PhongMaterial(Color.RED));
         xAxis.setRotationAxis(Rotate.Z_AXIS);
         xAxis.setRotate(90);
-        xAxis.setTranslateX(size / 2);
+        xAxis.setTranslateX(Size / 2);
 
-        Cylinder yAxis = new Cylinder(rad, size);
+        Cylinder yAxis = new Cylinder(Rad, Size);
         yAxis.setMaterial(new PhongMaterial(Color.GREEN));
-        yAxis.setTranslateY(size / 2);
+        yAxis.setTranslateY(Size / 2);
 
-        Cylinder zAxis = new Cylinder(rad, size);
+        Cylinder zAxis = new Cylinder(Rad, Size);
         zAxis.setMaterial(new PhongMaterial(Color.BLUE));
         zAxis.setRotationAxis(Rotate.X_AXIS);
         zAxis.setRotate(90);
-        zAxis.setTranslateZ(-rad + size / 2);
+        zAxis.setTranslateZ(-Rad + Size / 2);
 
         xyzAxis = new Group();
         xyzAxis.getChildren().addAll(xAxis, yAxis, zAxis);
@@ -191,8 +206,8 @@ public class ElevationController
         TriangleMesh Mesh = new TriangleMesh();
 
         //45.8935f, 7.3924f
-        LocationSearchResult TestResult = new LocationSearchResult(null, null, 47.203896f, 10.288914f);
-        WeatherAndLocationManager.LoadElevationData(TestResult);
+        //LocationSearchResult TestResult = new LocationSearchResult(null, null, 47.203896f, 10.288914f);
+        WeatherAndLocationManager.LoadElevationData(WeatherAndLocationManager.CurrentData.LocationData);
 
         ElevationResult ElevationData =  WeatherAndLocationManager.CurrentElevationData;
         float[][] Elevations = WeatherAndLocationManager.CurrentElevationData.Elevations;
@@ -204,7 +219,8 @@ public class ElevationController
         {
             for (int x = 0; x < Elevations[y].length; x++)
             {
-                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*100f, y * VertexSpacing - VertexOffset);
+                //Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*100f, y * VertexSpacing - VertexOffset);
+                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -(Elevations[y][x] - ElevationData.MinElevation), y * VertexSpacing - VertexOffset);
                 Mesh.getTexCoords().addAll(x / (float)Elevations[y].length, y / (float)Elevations.length);
             }
         }
@@ -223,12 +239,13 @@ public class ElevationController
 
         PhongMaterial Material = new PhongMaterial(Color.WHITE);
         Material.setSpecularColor(Color.WHITE);
-        Material.setDiffuseMap(GenerateDataTexture());
+        GenerateDataTexture();
+        Material.setDiffuseMap(TerrainTexture);
 
         MapMesh = new MeshView(Mesh);
         MapMesh.setDrawMode(DrawMode.FILL);        
         MapMesh.setMaterial(Material);
-        MapMesh.setCullFace(CullFace.NONE);
+        MapMesh.setCullFace(CullFace.FRONT);
         MapMesh.setTranslateX(0);
         MapMesh.setTranslateY(0);
         MapMesh.setTranslateZ(0);
@@ -236,9 +253,10 @@ public class ElevationController
         AmbientLight al = new AmbientLight();
         al.setColor(Color.WHITE);
         
-        PointLight pl = new PointLight(Color.BLUE);
-        pl.setTranslateX(50);
-        pl.setTranslateY(-225);  
+        PointLight pl = new PointLight(Color.LIGHTYELLOW);
+        pl.setTranslateX(-300);
+        pl.setTranslateY(-275);        
+        pl.setTranslateZ(-300);  
        
         Group group = new Group();
         group.getChildren().addAll(MapMesh, al, pl);
@@ -246,10 +264,9 @@ public class ElevationController
         return group;
     }
 
-    public Image GenerateDataTexture() {
+    public void GenerateDataTexture() {
 
         //Random Rnd = new Random();
-
         final int Size = WeatherAndLocationManager.CurrentElevationData.Elevations.length;
 
         WritableImage Img = new WritableImage(Size, Size);
@@ -268,12 +285,69 @@ public class ElevationController
             }
         }
 
-        return Img;
+        TerrainTexture = Img;
+
+        Img = new WritableImage(10, 100);
+        Writer = Img.getPixelWriter();
+
+        for (int y = 0; y < 100; y++) 
+        {
+            Color color = Color.rgb(0, 255 - (int)(255 * ((float)y / 100f)), 0);
+            for (int x = 0; x < 10; x++) 
+            {
+                Writer.setColor(x, y, color);
+            }
+        }
+        
+        GradientTexture = Img;
+
+        Img = new WritableImage(1, 1);
+        Writer = Img.getPixelWriter();
+        Writer.setColor(0, 0, Color.rgb(255, 255, 255));
+
+        BackgroundTexture = Img;
     }
 
-    public Pane buildGUI(Group shapeGroup) {
-        FlowPane guiPane = new FlowPane(10, 10);
-        guiPane.setAlignment(Pos.CENTER);
+    public Pane BuildGUI(Group shapeGroup) 
+    {
+        LegendTitle = new Label("Legend");
+        MaxVar = new Label(String.format("Max: %.0fm", WeatherAndLocationManager.CurrentElevationData.MaxElevation));
+        MinVar = new Label(String.format("Min: %.0fm", WeatherAndLocationManager.CurrentElevationData.MinElevation));
+        CurrentVar = new Label("Elevation");
+        ColorGradientDisplay = new ImageView();
+        ColorGradientDisplay.setImage(GradientTexture);
+        
+        DropShadow Ds = new DropShadow();
+        Ds.setOffsetY(3.0f);
+        Ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
+        Background = new ImageView();
+        Background.setImage(BackgroundTexture);
+        Background.setFitWidth(115);
+        Background.setFitHeight(164);
+        Background.setEffect(Ds);
+        
+        LegendTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        MaxVar.setFont(new Font("Arial", 16));
+        MinVar.setFont(new Font("Arial", 16));
+        CurrentVar.setFont(new Font("Arial", 16));
+
+        CurrentVar.setTranslateX(0);
+        CurrentVar.setTranslateY(-37);
+        MinVar.setTranslateX(20);   
+        MinVar.setTranslateY(89);
+        MaxVar.setTranslateX(20);   
+        MaxVar.setTranslateY(30);        
+        ColorGradientDisplay.setTranslateX(2);
+        ColorGradientDisplay.setTranslateY(-30);
+        Background.setTranslateX(-2);
+        Background.setTranslateY(162);
+        
+        FlowPane LegendPane = new FlowPane(Orientation.VERTICAL);
+        LegendPane.setAlignment(Pos.CENTER);
+        LegendPane.getChildren().addAll(Background, LegendTitle, MaxVar, MinVar, CurrentVar, ColorGradientDisplay);
+        
+
+
         /*
         btnX = new Button("<X>");
         btnY = new Button("<Y>");
@@ -324,21 +398,19 @@ public class ElevationController
             }
         });
         */
-        return guiPane;
+        return LegendPane;
     }
 
     public void RotateCamera()
     { 
-        //Point3D cameraPosition = new Point3D(pCamera.getTranslateX(), pCamera.getTranslateY(), pCamera.getTranslateZ());
-
         double TR = Math.toRadians(Theta);
         double GR = Math.toRadians(Gamma);
 
         pCamera.getTransforms().addAll(new Translate(-CameraOffset.getX(), -CameraOffset.getY(), -CameraOffset.getZ()));
             
-       //LookAt();
+        LookAt();
         
-        CameraOffset = new Translate(R * Math.cos(TR) * Math.sin(GR), 
+        /*CameraOffset = new Translate(R * Math.cos(TR) * Math.sin(GR), 
         -R * Math.cos(GR), 
         //-200,
         R * Math.sin(TR) * Math.sin(GR));
@@ -346,12 +418,15 @@ public class ElevationController
         //CameraOffset = new Translate(0, 0 ,R);
         
         pCamera.getTransforms().addAll(CameraOffset);
-
+        */
         //pCamera.setTranslateX(R * Math.cos(TR) * Math.sin(GR));
         //pCamera.setTranslateY(-R * Math.cos(GR));
         //pCamera.setTranslateY(-400);
         //pCamera.setTranslateZ(R * Math.sin(TR) * Math.sin(GR));
-        
+
+        CameraOffset = new Translate(0, 0, -R);
+        pCamera.getTransforms().addAll(CameraOffset);
+
         System.out.println("POS");
         System.out.println(CameraOffset.getX());
         System.out.println(CameraOffset.getY());
@@ -359,40 +434,24 @@ public class ElevationController
         System.out.println(R);
         System.out.println(Theta);
         System.out.println(Gamma);
-
-        LookAt();
     }
 
     public void LookAt() 
     {                
-                //double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
-        //double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));  
-        //double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
-        //double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));
-          
-        //Rotate rx = new Rotate(, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(), new Point3D(1, 0, 0));  
-        
+        Point3D PositionDiff = (new Point3D(0, 0, 0)).subtract(new Point3D(CameraOffset.getX(), CameraOffset.getY(), CameraOffset.getZ()));
+        Point3D RotationAxis = PositionDiff.crossProduct(RotateUp).normalize().multiply(-1);
+
         Rotate UndoX = new Rotate(-PrevXRotate.getAngle(), 0, 0, 0, RotateRight); 
         Rotate UndoY = new Rotate(-PrevYRotate.getAngle(), 0, 0, 0, RotateUp); 
-        //Rotate Rx = new Rotate(Gamma, 0, 0, 0, RotateRight);  
-        Rotate Rx = new Rotate(-45, 0, 0, 0, RotateRight);  
+        
+        Rotate Rx = new Rotate(Gamma - 90, 0, 0, 0, RotationAxis);  
         Rotate Ry = new Rotate(Theta - 180, 0, 0, 0, RotateUp);  
         
-        pCamera.getTransforms().addAll( 
-            //new Translate (  
-           //     -cameraPosition.getX(),   
-            //    -cameraPosition.getY(),   
-            //    -cameraPosition.getZ()
-           // ),
-            //UndoY, 
+        pCamera.getTransforms().addAll(            
             UndoX,
+            UndoY, 
+            Ry,
             Rx
-            //Ry
-            //new Translate (  
-            //    cameraPosition.getX(),   
-            //    cameraPosition.getY(),   
-            //    cameraPosition.getZ()
-            //)
         );       
 
         PrevXRotate = Rx;
