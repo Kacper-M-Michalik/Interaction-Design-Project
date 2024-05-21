@@ -21,6 +21,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -45,6 +49,7 @@ import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Random;
 
 //Kacper Michalik
 public class ElevationController
@@ -68,32 +73,33 @@ public class ElevationController
     int SceneH = App.ScreenHeight - 210; //-130
     
     float VertexSpacing = 20f;
+
+    boolean IsDragging;
+    double PreviousX = 0;
+    double PreviousY = 0;
     
     public void start(Pane parentNode) {
 
-        // Use a floawpane for the root node. In this case,
-        // vertical and horizontal gaps of 10 are used
+        // Use a floawpane for the root node.
         FlowPane rootNode = new FlowPane(10, 10);
         // Center nodes in the scene
         rootNode.setAlignment(Pos.CENTER);
-        // Create the scene
         parentNode.getChildren().add(rootNode);
 
-        // Create the camera
         pCamera = new PerspectiveCamera(true);
         // Set the camera's rotation axis to Y axis
         // pCamera.setRotationAxis(Rotate.Y_AXIS);
-        // Add transform to the camera
         pCamera.getTransforms().addAll(new Translate(0, -150, -500));
         pCamera.setFieldOfView(45);
-        pCamera.setFarClip(1000);
+        pCamera.setFarClip(10000);
+        pCamera.setNearClip(0);
 
         // Create sub scene to manage the group. Notice that a 
         // depth buffer is enabled
         Group groupAll = new Group();
         // Build the cast (shapes) and XYZ axis
-        cast = buildCast();
-        xyzAxis = (buildAxis(1, 200));
+        cast = GenerateTerrain();
+        xyzAxis = (BuildAxis(1, 200));
         groupAll.getChildren().addAll(cast, xyzAxis);
         // Create the scene and set its camera
         SubScene shapesSub = new SubScene(groupAll, SceneW, SceneH, true,
@@ -112,9 +118,36 @@ public class ElevationController
         Pane gui = buildGUI(cast);
 
         rootNode.getChildren().addAll(shapesSub, gui);
+
+
+        Stage MainStage = App.GetMainStage();
+        MainStage.addEventHandler(ScrollEvent.SCROLL, event -> {
+            pCamera.getTransforms().addAll(new Translate(0f, 0f, (float)event.getDeltaY()));
+        });
+        
+        MainStage.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> {
+            IsDragging = true;
+            PreviousX = event.getScreenX();
+            PreviousY = event.getSceneY();
+        });
+
+        MainStage.addEventHandler(MouseDragEvent.MOUSE_RELEASED, event -> {
+            IsDragging = false;
+        });
+
+        MainStage.addEventHandler(MouseDragEvent.MOUSE_MOVED, event -> {
+            //pCamera.getTransforms().addAll(new Translate(100f,0f,0f));
+            if (IsDragging)
+            {
+
+            }
+        });
+
+
+
     }
 
-    public Group buildAxis(float rad, float size) {
+    public Group BuildAxis(float rad, float size) {
         Cylinder xAxis = new Cylinder(rad, size);
         xAxis.setMaterial(new PhongMaterial(Color.RED));
         xAxis.setRotationAxis(Rotate.Z_AXIS);
@@ -137,13 +170,18 @@ public class ElevationController
         return xyzAxis;
     }
 
-    public Group buildCast() {
+    public Group GenerateTerrain() {
         TriangleMesh Mesh = new TriangleMesh();
 
-        ElevationResult ElevationData = WeatherAndLocationManager.LoadElevationData(new LocationSearchResult("null", "null", 45.8935f, 7.3924f));
-        float[][] Elevations = ElevationData.Elevations;
-        float Delta = ElevationData.MaxElevation - ElevationData.MinElevation;
+        //45.8935f, 7.3924f
+        LocationSearchResult TestResult = new LocationSearchResult(null, null, 47.203896f, 10.288914f);
+        //WeatherAndLocationManager.CheckCachedElevationData(TestResult);
+        WeatherAndLocationManager.LoadElevationData(TestResult);
 
+        ElevationResult ElevationData =  WeatherAndLocationManager.CurrentElevationData;
+        float[][] Elevations = WeatherAndLocationManager.CurrentElevationData.Elevations;
+
+        float Delta = ElevationData.MaxElevation - ElevationData.MinElevation;    
         float VertexOffset = (Elevations.length - 1) * 0.5f * VertexSpacing;
 
         for (int y = 0; y < Elevations.length; y++)
@@ -151,6 +189,7 @@ public class ElevationController
             for (int x = 0; x < Elevations[y].length; x++)
             {
                 Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*250f, y * VertexSpacing - VertexOffset);
+                Mesh.getTexCoords().addAll(x / (float)Elevations[y].length, y / (float)Elevations.length);
             }
         }
 
@@ -159,8 +198,8 @@ public class ElevationController
             for (int x = 0; x < Elevations[y].length - 1; x++)
             {
                 int Index = y * Elevations[y].length + x;
-                Mesh.getFaces().addAll(Index, 0, Index + Elevations[y].length, 0, Index + 1, 0);
-                Mesh.getFaces().addAll(Index + 1, 0, Index + Elevations[y].length, 0, Index + Elevations[y].length + 1, 0);
+                Mesh.getFaces().addAll(Index, Index, Index + Elevations[y].length, Index + Elevations[y].length, Index + 1, Index + 1);
+                Mesh.getFaces().addAll(Index + 1, Index + 1, Index + Elevations[y].length, Index + Elevations[y].length, Index + Elevations[y].length + 1, Index + Elevations[y].length + 1);
             }
         }
         
@@ -202,15 +241,14 @@ public class ElevationController
         );
         */
 
-        PhongMaterial material = new PhongMaterial();
-        //material.setDiffuseMap(new Image("images/buildings1.png"));
-        material = new PhongMaterial(Color.GRAY);
-        material.setSpecularColor(Color.WHITE);
+        PhongMaterial Material = new PhongMaterial(Color.WHITE);
+        Material.setSpecularColor(Color.WHITE);
+        Material.setDiffuseMap(GenerateDataTexture());
 
         MapMesh = new MeshView(Mesh);
         MapMesh.setDrawMode(DrawMode.FILL);        
-        MapMesh.setMaterial(material);
-        MapMesh.setCullFace(CullFace.NONE);
+        MapMesh.setMaterial(Material);
+        MapMesh.setCullFace(CullFace.FRONT);
 
         AmbientLight al = new AmbientLight();
         al.setColor(Color.WHITE);
@@ -223,6 +261,31 @@ public class ElevationController
         group.getChildren().addAll(MapMesh, al, pl);
 
         return group;
+    }
+
+    public Image GenerateDataTexture() {
+
+        //Random Rnd = new Random();
+
+        final int Size = WeatherAndLocationManager.CurrentElevationData.Elevations.length;
+
+        WritableImage Img = new WritableImage(Size, Size);
+        PixelWriter Writer = Img.getPixelWriter();
+
+        float Delta = (WeatherAndLocationManager.CurrentElevationData.MaxElevation - WeatherAndLocationManager.CurrentElevationData.MinElevation);
+
+        for (int x = 0; x < Size; x++) 
+        {
+            for (int y = 0; y < Size; y++) 
+            {
+                //Color color = Color.rgb(Rnd.nextInt( 256), Rnd.nextInt( 256), Rnd.nextInt( 256));
+                Color color = Color.rgb(0, (int)(255f*(WeatherAndLocationManager.CurrentElevationData.Elevations[y][x]-WeatherAndLocationManager.CurrentElevationData.MinElevation)/Delta), 0);
+                
+                Writer.setColor(x, y, color);
+            }
+        }
+
+        return Img;
     }
 
     public Pane buildGUI(Group shapeGroup) {
@@ -297,165 +360,5 @@ public class ElevationController
             trans.play();
         }
     }
-
-    /*
-    public void start()
-    {
-        PerspectiveCamera pCamera = new PerspectiveCamera(true);
-
-        pCamera.getTransforms().addAll(new Translate(0, 0, -500));
-
-        pCamera.setFieldOfView(45);
-        pCamera.setFarClip(1000);
-
-        Group groupAll = new Group();
-        cast = buildCast();
-        xyzAxis = (buildAxis(1, 200));
-        groupAll.getChildren().addAll(cast, xyzAxis);
-        // Create the scene and set its camera
-        SubScene shapesSub = new SubScene(groupAll, sceneW, sceneH, true,
-                SceneAntialiasing.DISABLED);
-        shapesSub.setFill(Color.AZURE);
-        shapesSub.setCamera(pCamera);
-
-
-        
-        Box testBox = new Box(5, 5, 5);
-        testBox.setMaterial(new PhongMaterial(Color.RED));
-        testBox.setDrawMode(DrawMode.LINE);
- 
-        // Create and position camera
-        PerspectiveCamera camera = new PerspectiveCamera(true);
-        camera.getTransforms().addAll (
-                new Rotate(-20, Rotate.Y_AXIS),
-                new Rotate(-20, Rotate.X_AXIS),
-                new Translate(0, 0, -15));
- 
-        // Build the Scene Graph
-        Group root = new Group();       
-        root.getChildren().add(camera);
-        root.getChildren().add(testBox);
- 
-        // Use a SubScene       
-        SubScene subScene = new SubScene(root, 300,300);
-        subScene.setFill(Color.ALICEBLUE);
-        subScene.setCamera(camera);
-        Group group = new Group();
-        group.getChildren().add(subScene);
-        
-
-        Box box = new Box(100,100,100);
-        box.setCullFace(CullFace.NONE);
-        box.setTranslateX(250);
-        box.setTranslateY(100);
-        box.setTranslateZ(400);
-
-        
-        float[] vertices = {
-            0, 0, 0,
-            1, 0, 0,
-            1, 0, 1,
-            0, 1, 1
-        };
-
-        float[] uvCoords = {
-            0, 0,
-            1, 0,
-            0, 1,
-            1, 1
-        };
-
-        int[] indicies = {
-            0, 0, 1, 1, 2, 3,
-            0, 0, 2, 3, 3, 3
-        };
-
-        int[] smoothing = {
-            0, 0, 0, 0
-        };
-
-        TriangleMesh mesh = new TriangleMesh(VertexFormat.POINT_TEXCOORD);
-        mesh.getPoints().setAll(vertices);
-        mesh.getFaces().setAll(indicies);
-        mesh.getTexCoords().setAll(uvCoords);
-        mesh.getFaceSmoothingGroups().setAll(smoothing);
-
-        //PhongMaterial material = new PhongMaterial();
-        MeshView Land = new MeshView(mesh);
-        Land.setDrawMode(DrawMode.FILL);
-        //Land.setMaterial(material);
-        
-
-        TriangleMesh mesh = new TriangleMesh();
-
-        // Vertex coordinates
-        float h = 210;    // Height (Y)
-        float w = 245;    // Width (X)
-        float d = 125;    // Depth (Z)
-
-         mesh.getPoints().addAll(
-            0,      -h / 2,   0,        // 0
-            w / 2,  h / 2,    d / 2,    // 1
-            w / 2,  h / 2,    -d / 2,   // 2
-            -w / 2, h / 2,    -d / 2,   // 3
-            -w / 2, h / 2,    d / 2     // 4
-        );
-        // Add texture coordinates
-        mesh.getTexCoords().addAll(
-                0.504f, 0.524f,     // 0
-                0.701f, 0,          // 1
-                0.126f, 0,          // 2
-                0,      0.364f,     // 3
-                0,      0.608f,     // 4
-                0.165f, 1,          // 5
-                0.606f, 1,          // 6
-                0.575f, 0.420f,     // 7
-                0.575f, 0.643f,     // 8
-                0.740f, 0.643f,     // 9
-                0.740f, 0.420f      // 10      
-        );
-
-        mesh.getFaces().addAll(
-                0, 0, 3, 5, 2, 6, // Front face
-                0, 0, 2, 2, 1, 3, // Right face
-                0, 0, 1, 1, 4, 2, // Back face
-                0, 0, 4, 4, 3, 5, // Left right face
-                2, 9, 3, 8, 4, 7, // Bottom face
-                2, 9, 4, 7, 1, 10 // Bottom face
-        );
-
-        PhongMaterial material = new PhongMaterial();
-        material = new PhongMaterial(Color.YELLOWGREEN);
-
-        MeshView pyramid = new MeshView(mesh);
-        pyramid.setDrawMode(DrawMode.FILL);
-        
-        pyramid.setMaterial(material);
-        //pyramid.setCullFace(CullFace.BACK);
-
-        AmbientLight al = new AmbientLight();
-        al.setColor(Color.LIGHTGRAY);
-
-        // Create a group that will hold the box and cylinder        
-        Group root = new Group();
-        root.getChildren().addAll(pyramid, al);
-
-
-        /*
-        boolean fixedEyeAtCameraZero = false;
-        PerspectiveCamera camera = new PerspectiveCamera(fixedEyeAtCameraZero);
-        camera.setTranslateX(150);
-        camera.setTranslateY(-100);
-        camera.setTranslateZ(250);
-
-        //root.getChildren().add(Land);
-        root.setRotationAxis(Rotate.X_AXIS);
-        root.setRotate(30);
-
-        Scene scene = new Scene(root, 500, 300, true);
-        scene.setCamera(camera);
-        App.setCurrentScene(scene);
-        
-    }*/
-    
+   
 }

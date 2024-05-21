@@ -1,7 +1,9 @@
 package weather.app;
 
+import java.io.Serializable;
+
 //Kacper Michalik
-public class LocationSearchResult 
+public class LocationSearchResult implements Serializable
 {
     public String Location;
     public String Country;

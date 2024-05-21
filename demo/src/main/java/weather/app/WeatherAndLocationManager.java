@@ -2,6 +2,7 @@ package weather.app;
 
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
@@ -13,6 +14,9 @@ import org.json.*;
 public class WeatherAndLocationManager 
 {
     public static WeatherData CurrentData;
+    public static ElevationResult CurrentElevationData;
+
+    final static String CacheFileName = "CachedData.json";
 
     private static String GetWebDataUTF8(String DataURL) throws Exception
     {
@@ -97,12 +101,14 @@ public class WeatherAndLocationManager
         return Results;
     }
 
-    public static ElevationResult LoadElevationData(LocationSearchResult LocationResult)
+    public static void LoadElevationData(LocationSearchResult LocationResult)
     {
         //For Lat/Long:
         //4th decimal place unit = 11m distance
 
-        final int SampleSize = 20;
+        if (CheckCachedElevationData(LocationResult)) return;
+
+        final int SampleSize = 30;
         float[][] Elevations = new float[SampleSize][SampleSize];
 
         int TotalPacked = 0;
@@ -161,13 +167,15 @@ public class WeatherAndLocationManager
                 {            
                     try 
                     {                    
-                        TimeUnit.MILLISECONDS.sleep(100);
+                        TimeUnit.MILLISECONDS.sleep(400);
                     } catch (Exception e2) 
                     {              
                         System.out.println("CRITICAL FAIL - ELEVATION DOWNLOAD");      
                         System.out.print(e);
                         System.out.print(e2);
-                        return new ElevationResult(new float[0][0], 0, 0);
+                        
+                        CurrentElevationData = new ElevationResult(new float[0][0], 0, 0);
+                        return;
                     }    
                 }
             }
@@ -188,7 +196,63 @@ public class WeatherAndLocationManager
             }
         }
 
-        return new ElevationResult(Elevations, Min, Max);
+        CurrentElevationData = new ElevationResult(Elevations, Min, Max);
+        WriteElevationDataToCache();
+    }
+
+    public static boolean CheckCachedElevationData(LocationSearchResult LocationResult)
+    {
+        try {
+            File FileHandle = new File(CacheFileName);
+            
+            if (!FileHandle.exists())
+            {
+                FileHandle.createNewFile();
+                return false;
+            }
+
+            try  
+            {                    
+                FileInputStream FIN = new FileInputStream(CacheFileName);
+                ObjectInputStream OIS = new ObjectInputStream(FIN);
+                CurrentElevationData = (ElevationResult)OIS.readObject();
+                OIS.close();
+                
+                //Add check for lat/long match in future
+
+                return true;
+            } 
+            catch (Exception e) 
+            {
+                e.printStackTrace();
+            }
+        } 
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private static void WriteElevationDataToCache()
+    {
+        try 
+        {
+            //Writer OutputWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(CacheFileName), "UTF-8"));
+            //OutputWriter.write("\"1\" : \"టుటోరియల్స్ పాయింట్ కి స్వాగతిం\"");            
+            //OutputWriter.close();
+
+            FileOutputStream FOS = new FileOutputStream(CacheFileName);
+            ObjectOutputStream OOS = new ObjectOutputStream(FOS);
+            OOS.writeObject(CurrentElevationData);
+            OOS.close();
+
+        } 
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
 
 }

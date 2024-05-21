@@ -15,12 +15,16 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage MainStage;
+
     public final static int ScreenWidth = 400;
     public final static int ScreenHeight = 720;
 
     @Override
     public void start(Stage stage) throws IOException
     {
+        MainStage = stage;
+
         LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("Cambridge");
         WeatherAndLocationManager.LoadWeatherData(Results[0]);
         UserProfile.setCurrentLocation(Results[0]);
@@ -30,6 +34,11 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         scene.setRoot(loadFXML("home")); // intentional, stops focus from being on search bar
+    }
+
+    public static Stage GetMainStage()
+    {
+        return MainStage;
     }
 
     static void setRoot(String fxml) throws IOException {
