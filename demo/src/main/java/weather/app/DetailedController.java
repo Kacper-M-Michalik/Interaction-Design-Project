@@ -347,8 +347,6 @@ public class DetailedController {
         float[] datas = WeatherAndLocationManager.CurrentData.GetApparentTemps();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("apparent_temperature");
         createRow(datas, apparent_temp, units);
-
-        System.out.println(hoursLeft());
     }
 
     private int hoursLeft() {
