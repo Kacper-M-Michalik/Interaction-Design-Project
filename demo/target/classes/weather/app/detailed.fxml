@@ -16,7 +16,7 @@
                <children>
                   <Pane prefHeight="46.0" prefWidth="400.0">
                      <children>
-                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="5.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="325.0" promptText="Cambridge GB" />
                         <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
                      </children>
                   </Pane>
