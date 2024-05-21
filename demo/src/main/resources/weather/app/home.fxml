@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="screen" maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
+<VBox fx:id="screen" maxHeight="818.0" maxWidth="400.0" minHeight="671.0" minWidth="400.0" onSwipeLeft="#switchToDetailed" onSwipeRight="#switchToMap" prefHeight="671.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weather.app.HomeController">
    <children>
       <BorderPane prefHeight="720.0" prefWidth="480.0">
          <top>
@@ -15,11 +15,8 @@
                <children>
                   <Pane prefHeight="46.0" prefWidth="400.0">
                      <children>
-                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
-                        <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="335.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="63.0" text="Favourite">
-                           <font>
-                              <Font size="10.0" />
-                           </font></CheckBox>
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="5.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="325.0" promptText="Cambridge GB" />
+                        <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
                      </children></Pane>
                </children>
             </HBox>
@@ -92,7 +89,7 @@
                       <RowConstraints maxHeight="288.0" minHeight="10.0" prefHeight="269.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <StackPane prefHeight="514.0" prefWidth="310.0">
+                        <StackPane onMouseClicked="#resetFocus" prefHeight="514.0" prefWidth="310.0">
                            <children>
                               <Text fx:id="temperature" strokeType="OUTSIDE" strokeWidth="0.0" text="15°">
                                  <font>
@@ -248,7 +245,7 @@
                   <HBox prefHeight="44.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
                </bottom>
                <left>
-                  <VBox prefHeight="525.0" prefWidth="16.0" BorderPane.alignment="CENTER" />
+                  <VBox onMouseClicked="#resetFocus" prefHeight="525.0" prefWidth="16.0" BorderPane.alignment="CENTER" />
                </left>
                <right>
                   <VBox prefHeight="525.0" prefWidth="13.0" BorderPane.alignment="CENTER" />
