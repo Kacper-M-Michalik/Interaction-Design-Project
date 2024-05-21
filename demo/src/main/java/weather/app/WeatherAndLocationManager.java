@@ -54,7 +54,16 @@ public class WeatherAndLocationManager
     
     public static void LoadWeatherData(LocationSearchResult LocationResult)
     {
-        LoadWeatherData(LocationResult.Lat, LocationResult.Long);
+        String APIString = String.format("https://api.open-meteo.com/v1/forecast?latitude=%.3f&longitude=%.3f&hourly=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature&current=precipitation_probability,precipitation,snowfall,snow_depth,visibility,temperature_80m,freezing_level_height,apparent_temperature", LocationResult.Lat, LocationResult.Long);
+        try 
+        {
+            JSONObject WebData = new JSONObject(GetWebDataUTF8(APIString));
+            CurrentData = new WeatherData(LocationResult, WebData);
+        } 
+        catch (Exception e) 
+        {            
+            System.out.print(e);
+        }
     }
 
     public static LocationSearchResult[] SearchLocations(String Location)
@@ -106,10 +115,10 @@ public class WeatherAndLocationManager
         //For Lat/Long:
         //4th decimal place unit = 11m distance
 
-        if (LocationResult.Location.equals("dev"))
-        {
-            if (CheckCachedElevationData(LocationResult)) return;
-        }
+        //if (LocationResult.Location.equals("dev"))
+        //{
+        if (CheckCachedElevationData(LocationResult)) return;
+        //}
 
         final int SampleSize = 100;
         float[][] Elevations = new float[SampleSize][SampleSize];
@@ -199,18 +208,14 @@ public class WeatherAndLocationManager
             }
         }
 
-        CurrentElevationData = new ElevationResult(LocationResult, SampleSize, Elevations, Min, Max);
-        
-        if (LocationResult.Location.equals("dev"))
-        {
-            WriteElevationDataToCache();
-        }
+        CurrentElevationData = new ElevationResult(LocationResult, SampleSize, Elevations, Min, Max);        
+        WriteElevationDataToCache();        
     }
 
     public static boolean CheckCachedElevationData(LocationSearchResult LocationResult)
     {
         try {
-            File FileHandle = new File(CacheFileName);
+            File FileHandle = new File("CachedData-" + LocationResult.Location + ".json");
             
             if (!FileHandle.exists())
             {
@@ -246,7 +251,7 @@ public class WeatherAndLocationManager
     {
         try 
         {
-            FileOutputStream FOS = new FileOutputStream(CacheFileName);
+            FileOutputStream FOS = new FileOutputStream("CachedData-" + CurrentElevationData.LocationData.Location + ".json");
             ObjectOutputStream OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(CurrentElevationData);
             OOS.close();

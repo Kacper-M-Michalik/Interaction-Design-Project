@@ -207,8 +207,8 @@ public class ElevationController
 
         //45.8935f, 7.3924f
         //LocationSearchResult TestResult = new LocationSearchResult(null, null, 47.203896f, 10.288914f);
-        //WeatherAndLocationManager.LoadElevationData(WeatherAndLocationManager.CurrentData.LocationData);
-        WeatherAndLocationManager.LoadElevationData(new LocationSearchResult("dev", "", 47.203896f, 10.288914f));
+        WeatherAndLocationManager.LoadElevationData(WeatherAndLocationManager.CurrentData.LocationData);
+        //WeatherAndLocationManager.LoadElevationData(new LocationSearchResult("dev1", "", 47.203896f, 10.288914f));
 
         ElevationResult ElevationData =  WeatherAndLocationManager.CurrentElevationData;
         float[][] Elevations = WeatherAndLocationManager.CurrentElevationData.Elevations;
