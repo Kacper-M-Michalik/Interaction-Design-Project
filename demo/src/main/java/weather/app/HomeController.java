@@ -66,4 +66,9 @@ public class HomeController {
     private void switchToMap() throws IOException {
         App.setRoot("map");
     }
+
+    @FXML
+    private void setCurrentDay() {
+
+    }
 }
