@@ -7,8 +7,11 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
@@ -292,31 +295,40 @@ public class DetailedController {
     private void createTemperatures() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("temperature_80m");
-        createRow(datas, temperature, WeatherAndLocationManager);
+        createRow(datas, temperature, units);
     }
 
     @FXML
     private void createRainfall() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
-        createRow(datas, rainfall);
+        String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("precipitation");
+        createRow(datas, rainfall, units);
     }
 
     @FXML
     private void createVisibility() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetVisibilities();
-        createRow(datas, visibility);
+
+        for (int i = 0; i < datas.length; i++) {
+            datas[i] = datas[i] / 1000;
+        }
+
+        String units = "km";
+        createRow(datas, visibility, units);
     }
 
     @FXML
     private void createSnowfall() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
-        createRow(datas, snowfall);
+        String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snowfall");
+        createRow(datas, snowfall, units);
     }
 
     @FXML
     private void createSnowDepths() {
         float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
-        createRow(datas, snowdepth);
+        String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("snow_depth");
+        createRow(datas, snowdepth, units);
     }
 
     private void createRow(float[] datas, HBox parent, String units) {
@@ -328,15 +340,16 @@ public class DetailedController {
             String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
 
             VBox vbox = new VBox();
-            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
             vbox.setPrefSize(60, 60);
 
             Text hourText = new Text(hour);
             hourText.setTextAlignment(TextAlignment.CENTER);
             hourText.setFont(new Font(12));
-            Text valueText = new Text(String.format("%s%s", data, units));
-            vbox.getChildren().addAll(hourText, valueText);
 
+            Text valueText = new Text(String.format("%.1f%s", data, units));
+            valueText.idProperty().setValue("box");
+
+            vbox.getChildren().addAll(hourText, valueText);
             parent.getChildren().add(vbox);
         }
     }

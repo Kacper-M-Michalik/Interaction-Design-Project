@@ -6,8 +6,3 @@
 #bg {
     -fx-background-color:  linear-gradient(from 100.0% 0.0% to 100.0% 100.0%, #86cddd 0.0%, #86cddd 0.6711%, #98f1ff 25.4522%, #eafcff 60.1101%, #ffffff00 100.0%);
 }
-
-.hour {
-    -fx-font-size: 13px;
-
-}

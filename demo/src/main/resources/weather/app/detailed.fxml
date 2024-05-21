@@ -148,13 +148,13 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" underline="true">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" vbarPolicy="NEVER">
+                                          <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: #00000000;" vbarPolicy="NEVER">
                                              <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
                                                    <children>
@@ -169,7 +169,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rainfall" underline="true">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                              <font>
                                                 <Font size="18.0" />
@@ -190,7 +190,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Visibility" underline="true">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                              <font>
                                                 <Font size="18.0" />
@@ -211,7 +211,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Snowfall" underline="true">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                              <font>
                                                 <Font size="18.0" />
@@ -232,7 +232,7 @@
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Snow Depth" underline="true">
                                              <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                              <font>
                                                 <Font size="18.0" />
