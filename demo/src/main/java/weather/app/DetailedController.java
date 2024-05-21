@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 import javafx.animation.AnimationTimer;
@@ -14,6 +15,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -62,6 +66,24 @@ public class DetailedController {
     @FXML
     private ScrollPane scroll_pane;
 
+    @FXML
+    private HBox temperature;
+    @FXML
+    private HBox rainfall;
+    @FXML
+    private HBox visibility;
+    @FXML
+    private HBox snowfall;
+    @FXML
+    private HBox snowdepth;
+    @FXML
+    private HBox apparent_temp;
+    @FXML
+    private HBox freezing;
+
+    private DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    private DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
 
     @FXML
     private void initialize() throws IOException {
@@ -71,6 +93,12 @@ public class DetailedController {
 
         sb = new SearchBar(searchBar, favouriteBox);
         screen.requestFocus();
+
+        createTemperatures();
+        createRainfall();
+        createVisibility();
+        createSnowfall();
+        createSnowDepths();
     }
 
     @FXML
@@ -241,5 +269,115 @@ public class DetailedController {
                 scroll_pane.setLayoutX(-new_val.doubleValue());
             }
         });
+    }
+
+    @FXML
+    private void createTemperatures() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        float[] datas = WeatherAndLocationManager.CurrentData.GetTemperatures();
+
+        for (int i = 1; i < 25; i++) {
+            String time = times[i];
+            float data = datas[i];
+            String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
+
+            VBox vbox = new VBox();
+            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
+            vbox.setPrefSize(60, 60);
+
+            Text hourText = new Text(hour);
+            Text valueText = new Text(String.format("%s", data));
+            vbox.getChildren().addAll(hourText, valueText);
+
+            temperature.getChildren().add(vbox);
+        }
+    }
+
+    @FXML
+    private void createRainfall() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        float[] datas = WeatherAndLocationManager.CurrentData.GetPrecipitations();
+
+        for (int i = 1; i < 25; i++) {
+            String time = times[i];
+            float data = datas[i];
+            String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
+
+            VBox vbox = new VBox();
+            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
+            vbox.setPrefSize(60, 60);
+
+            Text hourText = new Text(hour);
+            Text valueText = new Text(String.format("%s", data));
+            vbox.getChildren().addAll(hourText, valueText);
+
+            rainfall.getChildren().add(vbox);
+        }
+    }
+
+    @FXML
+    private void createVisibility() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        float[] datas = WeatherAndLocationManager.CurrentData.GetVisibilities();
+
+        for (int i = 1; i < 25; i++) {
+            String time = times[i];
+            float data = datas[i];
+            String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
+
+            VBox vbox = new VBox();
+            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
+            vbox.setPrefSize(60, 60);
+
+            Text hourText = new Text(hour);
+            Text valueText = new Text(String.format("%s", data));
+            vbox.getChildren().addAll(hourText, valueText);
+
+            visibility.getChildren().add(vbox);
+        }
+    }
+
+    @FXML
+    private void createSnowfall() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        float[] datas = WeatherAndLocationManager.CurrentData.GetSnowfalls();
+
+        for (int i = 1; i < 25; i++) {
+            String time = times[i];
+            float data = datas[i];
+            String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
+
+            VBox vbox = new VBox();
+            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
+            vbox.setPrefSize(60, 60);
+
+            Text hourText = new Text(hour);
+            Text valueText = new Text(String.format("%s", data));
+            vbox.getChildren().addAll(hourText, valueText);
+
+            snowfall.getChildren().add(vbox);
+        }
+    }
+
+    @FXML
+    private void createSnowDepths() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        float[] datas = WeatherAndLocationManager.CurrentData.GetSnowDepths();
+
+        for (int i = 1; i < 25; i++) {
+            String time = times[i];
+            float data = datas[i];
+            String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
+
+            VBox vbox = new VBox();
+            vbox.styleProperty().set("-fx-background-color: #DDDDDD; -fx-border-radius: 10px;");
+            vbox.setPrefSize(60, 60);
+
+            Text hourText = new Text(hour);
+            Text valueText = new Text(String.format("%s", data));
+            vbox.getChildren().addAll(hourText, valueText);
+
+            snowdepth.getChildren().add(vbox);
+        }
     }
 }

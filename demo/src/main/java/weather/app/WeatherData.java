@@ -42,6 +42,18 @@ public class WeatherData
         return Results;
     }
 
+    public String[] GetStringData(String Var) {
+        int BaseIndex = GetCurrentTimeIndex();
+        JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(Var);
+
+        String[] Results = new String[Data.length() - BaseIndex];
+        for (int i = BaseIndex; i < Data.length(); i++)
+        {
+            Results[i - BaseIndex] = Data.getString(i);
+        }
+        return Results;
+    }
+
     public float[] GetFloatData(String Var, int Offset) {
         int BaseIndex = GetCurrentTimeIndex() + Offset;
         JSONArray Data = JSON.getJSONObject("hourly").getJSONArray(Var);
