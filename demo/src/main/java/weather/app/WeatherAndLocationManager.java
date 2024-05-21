@@ -108,7 +108,7 @@ public class WeatherAndLocationManager
 
         if (CheckCachedElevationData(LocationResult)) return;
 
-        final int SampleSize = 30;
+        final int SampleSize = 50;
         float[][] Elevations = new float[SampleSize][SampleSize];
 
         int TotalPacked = 0;
