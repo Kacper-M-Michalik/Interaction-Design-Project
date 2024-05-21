@@ -103,6 +103,7 @@ public class DetailedController {
     }
 
     // day 1 update
+    @FXML
     private void updateData() {
         temperature.getChildren().clear();
         rainfall.getChildren().clear();
