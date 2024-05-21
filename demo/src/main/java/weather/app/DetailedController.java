@@ -312,7 +312,7 @@ public class DetailedController {
             String hour = LocalDateTime.parse(time, dataFormatter).format(resultFormatter);
 
             VBox vbox = new VBox();
-            vbox.setPrefSize(60, 60);
+            vbox.setPrefSize(100, 100);
             vbox.setSpacing(5);
             vbox.setStyle("-fx-background-color: #DDDDDD; -fx-background-radius: 3px;");
             vbox.setPadding(new Insets(3));
