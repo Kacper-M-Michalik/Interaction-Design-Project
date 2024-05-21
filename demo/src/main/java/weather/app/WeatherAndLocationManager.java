@@ -16,8 +16,6 @@ public class WeatherAndLocationManager
     public static WeatherData CurrentData;
     public static ElevationResult CurrentElevationData;
 
-    //final static String CacheFileName = "CachedData.json";
-
     private static String GetWebDataUTF8(String DataURL) throws Exception
     {
         InputStream Stream;
@@ -117,7 +115,7 @@ public class WeatherAndLocationManager
 
         if (CheckCachedElevationData(LocationResult)) return;
 
-        final int SampleSize = 100;
+        final int SampleSize = 25;
         float[][] Elevations = new float[SampleSize][SampleSize];
 
         int TotalPacked = 0;
@@ -213,7 +211,7 @@ public class WeatherAndLocationManager
     public static boolean CheckCachedElevationData(LocationSearchResult LocationResult)
     {
         try {
-            File FileHandle = new File("CachedData-" + LocationResult.Location + ".json");
+            File FileHandle = new File("CachedData-" + LocationResult.Location + "-" + LocationResult.Country + ".json");
             
             if (!FileHandle.exists())
             {
@@ -223,7 +221,7 @@ public class WeatherAndLocationManager
 
             try  
             {                    
-                FileInputStream FIN = new FileInputStream("CachedData-" + LocationResult.Location + ".json");
+                FileInputStream FIN = new FileInputStream("CachedData-" + LocationResult.Location + "-" + LocationResult.Country + ".json");
                 ObjectInputStream OIS = new ObjectInputStream(FIN);
                 CurrentElevationData = (ElevationResult)OIS.readObject();
                 OIS.close();
@@ -247,7 +245,7 @@ public class WeatherAndLocationManager
     {
         try 
         {
-            FileOutputStream FOS = new FileOutputStream("CachedData-" + CurrentElevationData.LocationData.Location + ".json");
+            FileOutputStream FOS = new FileOutputStream("CachedData-" + CurrentElevationData.LocationData.Location + "-" + CurrentElevationData.LocationData.Country + ".json");
             ObjectOutputStream OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(CurrentElevationData);
             OOS.close();

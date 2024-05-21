@@ -376,10 +376,10 @@ public class ElevationController implements Updatable
         CameraOffset = new Translate(0, 0, -R);
         pCamera.getTransforms().addAll(CameraOffset);
 
-        System.out.println("POS");
-        System.out.println(R);
-        System.out.println(Theta);
-        System.out.println(Gamma);
+        //System.out.println("POS");
+        //System.out.println(R);
+        //System.out.println(Theta);
+        //System.out.println(Gamma);
     }
 
     public void LookAt() 
