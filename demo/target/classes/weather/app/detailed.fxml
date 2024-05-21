@@ -118,7 +118,7 @@
                <center>
                   <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" BorderPane.alignment="CENTER">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="726.0" prefWidth="398.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="803.0" prefWidth="398.0">
                            <children>
                               <GridPane id="bg" prefWidth="398.0" vgap="10.0">
                                 <columnConstraints>
