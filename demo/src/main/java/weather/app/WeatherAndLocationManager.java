@@ -106,9 +106,12 @@ public class WeatherAndLocationManager
         //For Lat/Long:
         //4th decimal place unit = 11m distance
 
-        if (CheckCachedElevationData(LocationResult)) return;
+        if (LocationResult.Location.equals("dev"))
+        {
+            if (CheckCachedElevationData(LocationResult)) return;
+        }
 
-        final int SampleSize = 50;
+        final int SampleSize = 100;
         float[][] Elevations = new float[SampleSize][SampleSize];
 
         int TotalPacked = 0;
@@ -196,8 +199,12 @@ public class WeatherAndLocationManager
             }
         }
 
-        CurrentElevationData = new ElevationResult(Elevations, Min, Max);
-        WriteElevationDataToCache();
+        CurrentElevationData = new ElevationResult(LocationResult, SampleSize, Elevations, Min, Max);
+        
+        if (LocationResult.Location.equals("dev"))
+        {
+            WriteElevationDataToCache();
+        }
     }
 
     public static boolean CheckCachedElevationData(LocationSearchResult LocationResult)
@@ -239,10 +246,6 @@ public class WeatherAndLocationManager
     {
         try 
         {
-            //Writer OutputWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(CacheFileName), "UTF-8"));
-            //OutputWriter.write("\"1\" : \"టుటోరియల్స్ పాయింట్ కి స్వాగతిం\"");            
-            //OutputWriter.close();
-
             FileOutputStream FOS = new FileOutputStream(CacheFileName);
             ObjectOutputStream OOS = new ObjectOutputStream(FOS);
             OOS.writeObject(CurrentElevationData);
