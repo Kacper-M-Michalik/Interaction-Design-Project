@@ -24,7 +24,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class DetailedController {
+public class DetailedController implements Updatable
+{
     @FXML
     private VBox screen;
     @FXML
@@ -76,6 +77,9 @@ public class DetailedController {
 
     @FXML
     private void initialize() throws IOException {
+        
+        App.CurrentUpdatable = this;
+        
         labelButtons();
         //setScrollBar();
         setScrollPane();
@@ -90,6 +94,11 @@ public class DetailedController {
         createSnowDepths();
         createFreezingLevels();
         createApparentTemps();
+    }
+
+    public void LocationUpdated()
+    {
+
     }
 
     @FXML

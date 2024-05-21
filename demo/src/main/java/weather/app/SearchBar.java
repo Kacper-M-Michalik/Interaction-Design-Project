@@ -17,7 +17,7 @@ public class SearchBar {
         this.favouriteBox = favouriteBox;
         String currentLocation = UserProfile.getCurrentLocation();
         if (currentLocation.equalsIgnoreCase("current location")){
-            searchBar.setPromptText("Enter city or coords");
+            searchBar.setPromptText("Current Location - Cambridge GB");
         }
         else {
             searchBar.setPromptText(UserProfile.getCurrentLocation());
@@ -108,6 +108,10 @@ public class SearchBar {
             searchBar.setPromptText(newLocation.toString());
             searchBar.setValue("");
             searchBar.hide();
+            if (App.CurrentUpdatable != null) 
+            {
+                App.CurrentUpdatable.LocationUpdated();
+            }
         });
         showFavouriteAndRecentLocations();
     }

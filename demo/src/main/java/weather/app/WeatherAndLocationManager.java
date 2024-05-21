@@ -16,7 +16,7 @@ public class WeatherAndLocationManager
     public static WeatherData CurrentData;
     public static ElevationResult CurrentElevationData;
 
-    final static String CacheFileName = "CachedData.json";
+    //final static String CacheFileName = "CachedData.json";
 
     private static String GetWebDataUTF8(String DataURL) throws Exception
     {
@@ -225,7 +225,7 @@ public class WeatherAndLocationManager
 
             try  
             {                    
-                FileInputStream FIN = new FileInputStream(CacheFileName);
+                FileInputStream FIN = new FileInputStream("CachedData-" + LocationResult.Location + ".json");
                 ObjectInputStream OIS = new ObjectInputStream(FIN);
                 CurrentElevationData = (ElevationResult)OIS.readObject();
                 OIS.close();

@@ -14,7 +14,8 @@ import javafx.scene.text.Text;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Popup;
 
-public class HomeController {
+public class HomeController implements Updatable
+{
     @FXML
     private VBox screen;
     @FXML
@@ -35,8 +36,15 @@ public class HomeController {
         apparentTemp.setText(String.format("%s°", WeatherAndLocationManager.CurrentData.GetCurrentApparentTemp()));
     }
 
+    public void LocationUpdated()
+    {
+
+    }
+
     @FXML
-    private void initialize() {
+    private void initialize() {        
+        App.CurrentUpdatable = this;
+
         update();
         sb = new SearchBar(searchBar, favouriteBox);
         screen.requestFocus();

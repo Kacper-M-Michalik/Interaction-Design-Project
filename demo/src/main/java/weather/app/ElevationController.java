@@ -62,14 +62,10 @@ import java.util.concurrent.Flow;
 
 
 //Kacper Michalik
-public class ElevationController
+public class ElevationController implements Updatable
 {
-    // GUI controls
-    Button btnX, btnY, btnZ;
-    ToggleButton btnHideShape, btnHideAxis;
-    RadioButton optCamera, optShape;
-    ToggleGroup tgpSwitch;
-    CheckBox cbxWireframe;
+    FlowPane RootNode;
+    Pane ParentNode;
     PerspectiveCamera pCamera;
     Group cast, xyzAxis;
     MeshView MapMesh;
@@ -105,10 +101,13 @@ public class ElevationController
     
     public void start(Pane parentNode) {
 
+        App.CurrentUpdatable = this;
+        ParentNode = parentNode;
+        
         // Use a floawpane for the root node.
-        FlowPane rootNode = new FlowPane(10, 10);
-        rootNode.setAlignment(Pos.CENTER);
-        parentNode.getChildren().add(rootNode);
+        RootNode = new FlowPane(10, 10);
+        RootNode.setAlignment(Pos.CENTER);
+        parentNode.getChildren().add(RootNode);
 
         pCamera = new PerspectiveCamera(true);
         pCamera.setFieldOfView(45);
@@ -129,11 +128,9 @@ public class ElevationController
         shapesSub.setCamera(pCamera);
         
         Pane gui = BuildGUI(cast);
-        rootNode.getChildren().addAll(shapesSub, gui);
+        RootNode.getChildren().addAll(shapesSub, gui);
         gui.setTranslateX(-135);
         gui.setTranslateY(-370);
-
-        Stage MainStage = App.GetMainStage();
 
         shapesSub.addEventHandler(ScrollEvent.SCROLL, event -> {
             R -= (double)event.getDeltaY();
@@ -459,5 +456,10 @@ public class ElevationController
         PrevYRotate = Ry;                     
     }  
 
+    public void LocationUpdated()
+    {
+        ParentNode.getChildren().remove(RootNode);
+        start(ParentNode);
+    }
    
 }

@@ -19,6 +19,7 @@ public class App extends Application {
 
     public final static int ScreenWidth = 400;
     public final static int ScreenHeight = 720;
+    public static Updatable CurrentUpdatable = null;
 
     @Override
     public void start(Stage stage) throws IOException

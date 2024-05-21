@@ -53,5 +53,6 @@ public class MapController {
     @FXML
     private void switchToDetailed() throws IOException {
         App.setRoot("detailed");
+        App.CurrentUpdatable = null;
     }
 }
