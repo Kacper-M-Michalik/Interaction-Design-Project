@@ -115,10 +115,7 @@ public class WeatherAndLocationManager
         //For Lat/Long:
         //4th decimal place unit = 11m distance
 
-        //if (LocationResult.Location.equals("dev"))
-        //{
         if (CheckCachedElevationData(LocationResult)) return;
-        //}
 
         final int SampleSize = 20;
         float[][] Elevations = new float[SampleSize][SampleSize];
@@ -229,8 +226,6 @@ public class WeatherAndLocationManager
                 ObjectInputStream OIS = new ObjectInputStream(FIN);
                 CurrentElevationData = (ElevationResult)OIS.readObject();
                 OIS.close();
-                
-                //Add check for lat/long match in future
 
                 return true;
             } 

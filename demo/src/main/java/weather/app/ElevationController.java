@@ -41,6 +41,7 @@ import javafx.scene.shape.VertexFormat;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.Group;
@@ -108,6 +109,7 @@ public class ElevationController implements Updatable
         RootNode = new FlowPane(10, 10);
         RootNode.setAlignment(Pos.CENTER);
         parentNode.getChildren().add(RootNode);
+        //parentNode.getChildren().addFirst(RootNode);
 
         pCamera = new PerspectiveCamera(true);
         pCamera.setFieldOfView(45);
@@ -131,7 +133,7 @@ public class ElevationController implements Updatable
         RootNode.getChildren().addAll(shapesSub, gui);
         gui.setTranslateX(-135);
         gui.setTranslateY(-370);
-
+        
         shapesSub.addEventHandler(ScrollEvent.SCROLL, event -> {
             R -= (double)event.getDeltaY();
             if (R < 150) R = 150;
@@ -174,6 +176,7 @@ public class ElevationController implements Updatable
                 PreviousY = CurrentY;
             }
         });
+   
     }
 
     public Group BuildAxis(float Rad, float Size) {
@@ -204,8 +207,8 @@ public class ElevationController implements Updatable
 
         //45.8935f, 7.3924f
         //LocationSearchResult TestResult = new LocationSearchResult(null, null, 47.203896f, 10.288914f);
-        WeatherAndLocationManager.LoadElevationData(WeatherAndLocationManager.CurrentData.LocationData);
         //WeatherAndLocationManager.LoadElevationData(new LocationSearchResult("dev1", "", 47.203896f, 10.288914f));
+        WeatherAndLocationManager.LoadElevationData(WeatherAndLocationManager.CurrentData.LocationData);
 
         ElevationResult ElevationData =  WeatherAndLocationManager.CurrentElevationData;
         float[][] Elevations = WeatherAndLocationManager.CurrentElevationData.Elevations;
@@ -426,9 +429,9 @@ public class ElevationController implements Updatable
         pCamera.getTransforms().addAll(CameraOffset);
 
         System.out.println("POS");
-        System.out.println(CameraOffset.getX());
-        System.out.println(CameraOffset.getY());
-        System.out.println(CameraOffset.getZ());
+        //System.out.println(CameraOffset.getX());
+        //System.out.println(CameraOffset.getY());
+        //System.out.println(CameraOffset.getZ());
         System.out.println(R);
         System.out.println(Theta);
         System.out.println(Gamma);
