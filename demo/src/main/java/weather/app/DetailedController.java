@@ -347,6 +347,23 @@ public class DetailedController {
         float[] datas = WeatherAndLocationManager.CurrentData.GetApparentTemps();
         String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("apparent_temperature");
         createRow(datas, apparent_temp, units);
+
+        System.out.println(hoursLeft());
+    }
+
+    private int hoursLeft() {
+        String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
+        int hoursLeft = 0;
+        String time = times[hoursLeft];
+        String hour = LocalDateTime.parse(time, dataFormatter).format(DateTimeFormatter.ofPattern("HH"));
+
+        while (!hour.equals("23")) {
+            hoursLeft++;
+            time = times[hoursLeft];
+            hour = LocalDateTime.parse(time, dataFormatter).format(DateTimeFormatter.ofPattern("HH"));
+        }
+
+        return hoursLeft;
     }
 
     private void createRow(float[] datas, HBox parent, String units) {
