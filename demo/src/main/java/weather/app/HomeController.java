@@ -39,6 +39,11 @@ public class HomeController {
     }
 
     @FXML
+    private void resetFocus() {
+        screen.requestFocus();
+    }
+
+    @FXML
     private void onLocationSwitchRequest(){
         boolean switchedLocation = sb.requestLocationSwitch();
         if (switchedLocation){
