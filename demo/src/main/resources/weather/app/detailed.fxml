@@ -156,7 +156,7 @@
                                           </Text>
                                           <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="48.0" prefWidth="3000.0">
                                                    <children>
                                                       <HBox fx:id="temperature" prefHeight="62.0" prefWidth="3000.0" spacing="15.0" />
                                                    </children>
@@ -177,7 +177,7 @@
                                           </Text>
                                           <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                                             <content>
-                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="2999.0">
                                                    <children>
                                                       <HBox fx:id="rainfall" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
                                                    </children>
@@ -198,7 +198,7 @@
                                           </Text>
                                           <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="2993.0">
                                                    <children>
                                                       <HBox fx:id="visibility" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
                                                    </children>
@@ -219,7 +219,7 @@
                                           </Text>
                                           <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="44.0" prefWidth="2995.0">
                                                    <children>
                                                       <HBox fx:id="snowfall" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
                                                    </children>
@@ -240,9 +240,51 @@
                                           </Text>
                                           <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="61.0" prefWidth="3000.0">
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="2993.0">
                                                    <children>
                                                       <HBox fx:id="snowdepth" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="242.0" prefWidth="330.0" GridPane.rowIndex="5">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Freezing Height" underline="true">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" top="5.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="2993.0">
+                                                   <children>
+                                                      <HBox fx:id="freezing_level" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="242.0" prefWidth="330.0" GridPane.rowIndex="6">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apparent Temperature" underline="true">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" top="5.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                          <ScrollPane hbarPolicy="NEVER" maxWidth="-Infinity" prefHeight="60.0" prefWidth="903.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="2993.0">
+                                                   <children>
+                                                      <HBox fx:id="apparent_temp" prefHeight="62.0" prefWidth="3000.0" spacing="5.0" />
                                                    </children>
                                                 </AnchorPane>
                                              </content>

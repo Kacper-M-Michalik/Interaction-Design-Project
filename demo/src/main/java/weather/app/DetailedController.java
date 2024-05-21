@@ -17,11 +17,9 @@ import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -84,7 +82,7 @@ public class DetailedController {
     @FXML
     private HBox apparent_temp;
     @FXML
-    private HBox freezing;
+    private HBox freezing_level;
 
     private DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     private DateTimeFormatter resultFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -104,6 +102,8 @@ public class DetailedController {
         createVisibility();
         createSnowfall();
         createSnowDepths();
+        createFreezingLevels();
+        createApparentTemps();
     }
 
     @FXML
@@ -122,12 +122,16 @@ public class DetailedController {
         visibility.getChildren().clear();
         snowfall.getChildren().clear();
         snowdepth.getChildren().clear();
+        freezing_level.getChildren().clear();
+        apparent_temp.getChildren().clear();
 
         createTemperatures();
         createRainfall();
         createVisibility();
         createSnowfall();
         createSnowDepths();
+        createApparentTemps();
+        createFreezingLevels();
     }
 
     @FXML
@@ -331,6 +335,20 @@ public class DetailedController {
         createRow(datas, snowdepth, units);
     }
 
+    @FXML
+    private void createFreezingLevels() {
+        float[] datas = WeatherAndLocationManager.CurrentData.GetFreezingHeights();
+        String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("freezing_level_height");
+        createRow(datas, freezing_level, units);
+    }
+
+    @FXML
+    private void createApparentTemps() {
+        float[] datas = WeatherAndLocationManager.CurrentData.GetApparentTemps();
+        String units = WeatherAndLocationManager.CurrentData.JSON.getJSONObject("hourly_units").getString("apparent_temperature");
+        createRow(datas, apparent_temp, units);
+    }
+
     private void createRow(float[] datas, HBox parent, String units) {
         String[] times = WeatherAndLocationManager.CurrentData.GetStringData("time");
 
@@ -341,8 +359,13 @@ public class DetailedController {
 
             VBox vbox = new VBox();
             vbox.setPrefSize(60, 60);
+            vbox.setSpacing(5);
+            vbox.setStyle("-fx-background-color: #DDDDDD; -fx-background-radius: 3px;");
+            vbox.setPadding(new Insets(3));
 
             Text hourText = new Text(hour);
+            vbox.setPrefSize(60, 60);
+            vbox.setSpacing(5);
             hourText.setTextAlignment(TextAlignment.CENTER);
             hourText.setFont(new Font(12));
 
