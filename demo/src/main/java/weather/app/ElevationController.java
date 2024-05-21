@@ -78,9 +78,13 @@ public class ElevationController
     boolean IsDragging = false;
     double PreviousX = 0;
     double PreviousY = 0;
-    double Theta = 0;
-    double Gamma = 80;
-    double R = 500;
+    double Theta = 270;
+    double Gamma = 10;
+    double R = 700;
+    Rotate PrevXRotate;
+    Rotate PrevYRotate;
+    Point3D RotateUp = new Point3D(0, -1, 0);
+    Point3D RotateRight = new Point3D(1, 0, 0);
     
     public void start(Pane parentNode) {
 
@@ -93,19 +97,22 @@ public class ElevationController
         pCamera = new PerspectiveCamera(true);
         // Set the camera's rotation axis to Y axis
         // pCamera.setRotationAxis(Rotate.Y_AXIS);
-        pCamera.getTransforms().addAll(new Translate(0, -150, -500));
+        //pCamera.getTransforms().addAll(new Translate(0, -150, -500));
         pCamera.setFieldOfView(45);
         pCamera.setFarClip(10000);
         pCamera.setNearClip(0);
+        PrevXRotate = new Rotate(Gamma - 90, 0,0,0, RotateRight);
+        PrevYRotate = new Rotate(Theta - 180, 0, 0, 0, RotateUp);
+
+        pCamera.getTransforms().addAll(PrevXRotate);//, new Translate(-419.9878780390644, -181.17333157176452, -529.8928252273581));
 
         // Create sub scene to manage the group. Notice that a 
         // depth buffer is enabled
         Group groupAll = new Group();
-        // Build the cast (shapes) and XYZ axis
         cast = GenerateTerrain();
+        
         xyzAxis = (BuildAxis(1, 200));
         groupAll.getChildren().addAll(cast, xyzAxis);
-        // Create the scene and set its camera
         SubScene shapesSub = new SubScene(groupAll, SceneW, SceneH, true,
                 SceneAntialiasing.DISABLED);
         shapesSub.setFill(Color.AZURE);
@@ -122,7 +129,8 @@ public class ElevationController
         Pane gui = buildGUI(cast);
 
         rootNode.getChildren().addAll(shapesSub, gui);
-
+        
+        RotateCamera();
 
         Stage MainStage = App.GetMainStage();
         MainStage.addEventHandler(ScrollEvent.SCROLL, event -> {
@@ -157,7 +165,7 @@ public class ElevationController
                 double DeltaX = CurrentX - PreviousX;
                 double DeltaY = CurrentY - PreviousY;
 
-                Theta += DeltaX;
+                //Theta += DeltaX;
                 Gamma += DeltaY;
                 if (Gamma < 10) Gamma = 10;
                 if (Gamma > 80) Gamma = 80;
@@ -169,7 +177,6 @@ public class ElevationController
             }
         });
 
-        RotateCamera();
     }
 
     public Group BuildAxis(float rad, float size) {
@@ -213,7 +220,7 @@ public class ElevationController
         {
             for (int x = 0; x < Elevations[y].length; x++)
             {
-                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*250f, y * VertexSpacing - VertexOffset);
+                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*100f, y * VertexSpacing - VertexOffset);
                 Mesh.getTexCoords().addAll(x / (float)Elevations[y].length, y / (float)Elevations.length);
             }
         }
@@ -230,42 +237,6 @@ public class ElevationController
         
         Mesh.getTexCoords().addAll(0f,0f);
 
-        /*        
-        // Vertex coordinates
-        float h = 210;    // Height (Y)
-        float w = 245;    // Width (X)
-        float d = 125;    // Depth (Z)
-        mesh.getPoints().addAll(
-            0,      -h / 2,   0,        // 0
-            w / 2,  h / 2,    d / 2,    // 1
-            w / 2,  h / 2,    -d / 2,   // 2
-            -w / 2, h / 2,    -d / 2,   // 3
-            -w / 2, h / 2,    d / 2     // 4
-        );
-        // Add texture coordinates
-        mesh.getTexCoords().addAll(
-                0.504f, 0.524f,     // 0
-                0.701f, 0,          // 1
-                0.126f, 0,          // 2
-                0,      0.364f,     // 3
-                0,      0.608f,     // 4
-                0.165f, 1,          // 5
-                0.606f, 1,          // 6
-                0.575f, 0.420f,     // 7
-                0.575f, 0.643f,     // 8
-                0.740f, 0.643f,     // 9
-                0.740f, 0.420f      // 10      
-        );
-        mesh.getFaces().addAll(
-                0, 0, 3, 5, 2, 6, // Front face
-                0, 0, 2, 2, 1, 3, // Right face
-                0, 0, 1, 1, 4, 2, // Back face
-                0, 0, 4, 4, 3, 5, // Left right face
-                2, 9, 3, 8, 4, 7, // Bottom face
-                2, 9, 4, 7, 1, 10 // Bottom face
-        );
-        */
-
         PhongMaterial Material = new PhongMaterial(Color.WHITE);
         Material.setSpecularColor(Color.WHITE);
         Material.setDiffuseMap(GenerateDataTexture());
@@ -274,6 +245,9 @@ public class ElevationController
         MapMesh.setDrawMode(DrawMode.FILL);        
         MapMesh.setMaterial(Material);
         MapMesh.setCullFace(CullFace.NONE);
+        MapMesh.setTranslateX(0);
+        MapMesh.setTranslateY(0);
+        MapMesh.setTranslateZ(0);
 
         AmbientLight al = new AmbientLight();
         al.setColor(Color.WHITE);
@@ -369,41 +343,65 @@ public class ElevationController
     }
 
     public void RotateCamera()
-    {
+    { 
+        //Point3D cameraPosition = new Point3D(pCamera.getTranslateX(), pCamera.getTranslateY(), pCamera.getTranslateZ());
+
         double TR = Math.toRadians(Theta);
         double GR = Math.toRadians(Gamma);
 
+            
         pCamera.setTranslateX(R * Math.cos(TR) * Math.sin(GR));
         pCamera.setTranslateY(-R * Math.cos(GR));
+        //pCamera.setTranslateY(-400);
         pCamera.setTranslateZ(R * Math.sin(TR) * Math.sin(GR));
+        
         System.out.println("POS");
         System.out.println(pCamera.getTranslateX());
         System.out.println(pCamera.getTranslateY());
         System.out.println(pCamera.getTranslateZ());
-        //lookAt(new Point3D(0, 0, 0));
-        //float test = 1;
+        System.out.println(R);
+        System.out.println(Theta);
+        System.out.println(Gamma);
+
+        LookAt();
     }
 
-    public void lookAt(Point3D lookAtPos) 
+    public void LookAt() 
     {                
         Point3D cameraPosition = new Point3D(pCamera.getTranslateX(), pCamera.getTranslateY(), pCamera.getTranslateZ());
-        Point3D camDirection = lookAtPos.subtract(cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ());  
-        camDirection = camDirection.normalize();  
     
-        double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
-        double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));  
-    
-        Rotate rx = new Rotate(xRotation, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(), Rotate.X_AXIS);  
-        Rotate ry = new Rotate(yRotation, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(),  Rotate.Y_AXIS);  
+        //double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
+        //double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));  
+        //double xRotation = Math.toDegrees(Math.asin(-camDirection.getY()));  
+        //double yRotation =  Math.toDegrees(Math.atan2( camDirection.getX(), camDirection.getZ()));
+          
+        //Rotate rx = new Rotate(, cameraPosition.getX(), cameraPosition.getY(), cameraPosition.getZ(), new Point3D(1, 0, 0));  
+        
+        Rotate UndoX = new Rotate(-PrevXRotate.getAngle(), 0, 0, 0, RotateRight); 
+        Rotate UndoY = new Rotate(-PrevYRotate.getAngle(), 0, 0, 0, RotateUp); 
+        Rotate Rx = new Rotate(Gamma - 90, 0, 0, 0, RotateRight);  
+        Rotate Ry = new Rotate(Theta - 180, 0, 0, 0, RotateUp);  
         
         pCamera.getTransforms().addAll( 
-            ry, rx,   
+            new Translate (  
+                -cameraPosition.getX(),   
+                -cameraPosition.getY(),   
+                -cameraPosition.getZ()
+            ),
+            //UndoY, 
+            UndoX,
+            Rx,
+           // Ry,
             new Translate (  
                 cameraPosition.getX(),   
                 cameraPosition.getY(),   
                 cameraPosition.getZ()
             )
-        );                         
+        );       
+
+        PrevXRotate = Rx;
+        PrevYRotate = Ry;   
+                  
     }  
 
     public class RotateAction implements EventHandler<ActionEvent> {
