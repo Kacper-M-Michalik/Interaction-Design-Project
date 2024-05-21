@@ -16,6 +16,7 @@ public class SearchBar {
         this.searchBar = searchBar;
         this.favouriteBox = favouriteBox;
         searchBar.setPromptText("Enter city or coords");
+        updateFavourites();
         showFavouriteAndRecentLocations();
     }
 
@@ -68,6 +69,7 @@ public class SearchBar {
     private void goToCurrentLocation(){
         LocationSearchResult newLocation = UserProfile.getCurrentLatLong();
         changeLocation(newLocation);
+        updateFavourites();
     }
 
     private boolean handleLongLat(String val){
@@ -116,11 +118,16 @@ public class SearchBar {
 
     public void updateFavourites(){
         if (favouriteBox.isSelected()){
-            boolean success = UserProfile.addToFavourites();
+            boolean success = UserProfile.addToFavourites() || UserProfile.getCurrentLocation().equalsIgnoreCase("current location");
             favouriteBox.setSelected(success);
         }
         else{
-            UserProfile.removeFromFavourites(UserProfile.getCurrentLocation());
+            if (UserProfile.getCurrentLocation().equalsIgnoreCase("current location")){
+                favouriteBox.setSelected(true);
+            }
+            else {
+                UserProfile.removeFromFavourites(UserProfile.getCurrentLocation());
+            }
         }
         showFavouriteAndRecentLocations();
     }
