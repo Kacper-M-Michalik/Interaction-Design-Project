@@ -117,7 +117,7 @@ public class WeatherAndLocationManager
 
         if (CheckCachedElevationData(LocationResult)) return;
 
-        final int SampleSize = 20;
+        final int SampleSize = 100;
         float[][] Elevations = new float[SampleSize][SampleSize];
 
         int TotalPacked = 0;
@@ -136,7 +136,8 @@ public class WeatherAndLocationManager
         {
             int PackedCount = 0;
             Builder = new StringBuilder();
-            Builder.append("https://api.opentopodata.org/v1/eudem25m?locations=");
+            //Builder.append("https://api.opentopodata.org/v1/eudem25m?locations=");
+            Builder.append("https://api.opentopodata.org/v1/aster30m?locations=");
 
             int CopyX = x;
             int CopyY = y;
@@ -176,7 +177,7 @@ public class WeatherAndLocationManager
                 {            
                     try 
                     {                    
-                        TimeUnit.MILLISECONDS.sleep(400);
+                        TimeUnit.MILLISECONDS.sleep(201);
                     } catch (Exception e2) 
                     {              
                         System.out.println("CRITICAL FAIL - ELEVATION DOWNLOAD");      

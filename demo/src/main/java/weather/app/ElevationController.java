@@ -108,8 +108,7 @@ public class ElevationController implements Updatable
         // Use a floawpane for the root node.
         RootNode = new FlowPane(10, 10);
         RootNode.setAlignment(Pos.CENTER);
-        parentNode.getChildren().add(RootNode);
-        //parentNode.getChildren().addFirst(RootNode);
+        ParentNode.getChildren().add(RootNode);
 
         pCamera = new PerspectiveCamera(true);
         pCamera.setFieldOfView(45);
@@ -220,8 +219,9 @@ public class ElevationController implements Updatable
         {
             for (int x = 0; x < Elevations[y].length; x++)
             {
+                //Change Y to be logarithmic later
                 //Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -((Elevations[y][x] - ElevationData.MinElevation)/Delta)*100f, y * VertexSpacing - VertexOffset);
-                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -(Elevations[y][x] - ElevationData.MinElevation), y * VertexSpacing - VertexOffset);
+                Mesh.getPoints().addAll(x * VertexSpacing - VertexOffset, -2 * (Elevations[y][x] - ElevationData.MinElevation), y * VertexSpacing - VertexOffset);
                 Mesh.getTexCoords().addAll(x / (float)Elevations[y].length, y / (float)Elevations.length);
             }
         }
@@ -347,71 +347,19 @@ public class ElevationController implements Updatable
         LegendPane.setAlignment(Pos.CENTER);
         LegendPane.getChildren().addAll(Background, LegendTitle, MaxVar, MinVar, CurrentVar, ColorGradientDisplay);
         
-
-
-        /*
-        btnX = new Button("<X>");
-        btnY = new Button("<Y>");
-        btnZ = new Button("<Z>");
-        btnHideShape = new ToggleButton("Hide Shape");
-        btnHideAxis = new ToggleButton("Hide Axis");
-        tgpSwitch = new ToggleGroup();
-        optCamera = new RadioButton("Camera");
-        optCamera.setToggleGroup(tgpSwitch);
-        optShape = new RadioButton("Shape");
-        optShape.setToggleGroup(tgpSwitch);
-        optShape.setSelected(true);
-        cbxWireframe = new CheckBox("Wireframe");
-        cbxWireframe.setSelected(false);
-
-        guiPane.getChildren().addAll(btnX, btnY, btnZ,
-                btnHideShape, btnHideAxis,
-                optCamera, optShape, cbxWireframe);
-        
-        // Add event handlers
-        btnX.setOnAction(rotCamX);
-        btnY.setOnAction(rotCamY);
-        btnZ.setOnAction(rotCamZ);
-
-        //optShape.setOnAction((ActionEvent event) -> {
-        //    btnX.setOnAction(rotShapeX);
-        //    btnY.setOnAction(rotShapeY);
-        //    btnZ.setOnAction(rotShapeZ);
-        //});
-        optCamera.setOnAction((ActionEvent event) -> {
-            btnX.setOnAction(rotCamX);
-            btnY.setOnAction(rotCamY);
-            btnZ.setOnAction(rotCamZ);
-        });
-        btnHideShape.setOnAction((ActionEvent event) -> {
-            cast.setVisible(!btnHideShape.isSelected());
-        });
-
-        btnHideAxis.setOnAction((ActionEvent event) -> {
-            xyzAxis.setVisible(!btnHideAxis.isSelected());
-        });
-
-        cbxWireframe.setOnAction((ActionEvent event) -> {
-            if (cbxWireframe.isSelected()) {
-                MapMesh.setDrawMode(DrawMode.LINE);
-            } else {
-                MapMesh.setDrawMode(DrawMode.FILL);
-            }
-        });
-        */
         return LegendPane;
     }
 
     public void RotateCamera()
     { 
-        double TR = Math.toRadians(Theta);
-        double GR = Math.toRadians(Gamma);
-
         pCamera.getTransforms().addAll(new Translate(-CameraOffset.getX(), -CameraOffset.getY(), -CameraOffset.getZ()));
             
         LookAt();
         
-        /*CameraOffset = new Translate(R * Math.cos(TR) * Math.sin(GR), 
+        /*
+        double TR = Math.toRadians(Theta);
+        double GR = Math.toRadians(Gamma);
+        CameraOffset = new Translate(R * Math.cos(TR) * Math.sin(GR), 
         -R * Math.cos(GR), 
         //-200,
         R * Math.sin(TR) * Math.sin(GR));
@@ -429,9 +377,6 @@ public class ElevationController implements Updatable
         pCamera.getTransforms().addAll(CameraOffset);
 
         System.out.println("POS");
-        //System.out.println(CameraOffset.getX());
-        //System.out.println(CameraOffset.getY());
-        //System.out.println(CameraOffset.getZ());
         System.out.println(R);
         System.out.println(Theta);
         System.out.println(Gamma);
