@@ -15,7 +15,13 @@ public class SearchBar {
     public SearchBar(ComboBox<String> searchBar, CheckBox favouriteBox){
         this.searchBar = searchBar;
         this.favouriteBox = favouriteBox;
-        searchBar.setPromptText("Enter city or coords");
+        String currentLocation = UserProfile.getCurrentLocation();
+        if (currentLocation.equalsIgnoreCase("current location")){
+            searchBar.setPromptText("Enter city or coords");
+        }
+        else {
+            searchBar.setPromptText(UserProfile.getCurrentLocation());
+        }
         updateFavourites();
         showFavouriteAndRecentLocations();
     }
