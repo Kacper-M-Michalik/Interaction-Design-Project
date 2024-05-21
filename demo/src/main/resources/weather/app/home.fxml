@@ -15,7 +15,7 @@
                <children>
                   <Pane prefHeight="46.0" prefWidth="400.0">
                      <children>
-                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="14.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="316.0" promptText="Cambridge GB" />
+                        <ComboBox id="searchBar" fx:id="searchBar" editable="true" layoutX="5.0" layoutY="2.0" onAction="#onLocationSwitchRequest" prefHeight="25.0" prefWidth="325.0" promptText="Cambridge GB" />
                         <CheckBox id="favouriteBox" fx:id="favouriteBox" alignment="CENTER" contentDisplay="CENTER" layoutX="347.0" layoutY="10.0" mnemonicParsing="false" onAction="#updateFavourites" prefHeight="25.0" prefWidth="25.0" />
                      </children></Pane>
                </children>
@@ -89,7 +89,7 @@
                       <RowConstraints maxHeight="288.0" minHeight="10.0" prefHeight="269.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <StackPane prefHeight="514.0" prefWidth="310.0">
+                        <StackPane onMouseClicked="#resetFocus" prefHeight="514.0" prefWidth="310.0">
                            <children>
                               <Text fx:id="temperature" strokeType="OUTSIDE" strokeWidth="0.0" text="15°">
                                  <font>
@@ -245,7 +245,7 @@
                   <HBox prefHeight="44.0" prefWidth="400.0" BorderPane.alignment="CENTER" />
                </bottom>
                <left>
-                  <VBox prefHeight="525.0" prefWidth="16.0" BorderPane.alignment="CENTER" />
+                  <VBox onMouseClicked="#resetFocus" prefHeight="525.0" prefWidth="16.0" BorderPane.alignment="CENTER" />
                </left>
                <right>
                   <VBox prefHeight="525.0" prefWidth="13.0" BorderPane.alignment="CENTER" />

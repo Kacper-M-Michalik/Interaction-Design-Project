@@ -6,3 +6,25 @@
 #bg {
     -fx-background-color:  linear-gradient(from 100.0% 0.0% to 100.0% 100.0%, #86cddd 0.0%, #86cddd 0.6711%, #98f1ff 25.4522%, #eafcff 60.1101%, #ffffff00 100.0%);
 }
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.check-box>.box {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+    -fx-background-image: url("imgs/unmarked.png");
+    -fx-background-position: center;
+    -fx-background-repeat: stretch;
+    -fx-shape: none;
+}
+
+.check-box:selected>.box>.mark{
+    -fx-background-color: transparent;
+    -fx-background-image: url("imgs/marked.png");
+}

@@ -1,5 +1,6 @@
-How to run:
-Open using Visual Studio Code, click run button on top right corner or use Maven run command.
+Ways to run:
+- Run the maven javafx:run job in any relevant IDE (vscode, intellij, eclipse, etc.)
+- Run maven javafx:run job in terminal
 
 Libraries Used:
 URLReader

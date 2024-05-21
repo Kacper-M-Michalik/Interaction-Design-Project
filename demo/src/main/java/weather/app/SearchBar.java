@@ -15,7 +15,8 @@ public class SearchBar {
     public SearchBar(ComboBox<String> searchBar, CheckBox favouriteBox){
         this.searchBar = searchBar;
         this.favouriteBox = favouriteBox;
-        searchBar.setPromptText(UserProfile.getCurrentLocation());
+        searchBar.setPromptText("Enter city or coords");
+        updateFavourites();
         showFavouriteAndRecentLocations();
     }
 
@@ -29,8 +30,11 @@ public class SearchBar {
 
     public boolean requestLocationSwitch(){
         String searchValue = searchBar.getValue();
-        if (searchValue == null || searchValue.isEmpty() || searchValue.equals(UserProfile.getCurrentLocation())){
-            Platform.runLater(() -> searchBar.setValue(""));
+        if (searchValue == null || searchValue.isEmpty() || searchValue.equalsIgnoreCase(UserProfile.getCurrentLocation()) || searchValue.equalsIgnoreCase("no location found")){
+            Platform.runLater(() -> {
+                searchBar.setValue("");
+                searchBar.hide();
+            });
             showFavouriteAndRecentLocations();
             return false;
         }
@@ -55,7 +59,7 @@ public class SearchBar {
             if (possibleLocations.length > 0) {
                 updateSearchValues(possibleLocations);
             } else {
-                showFavouriteAndRecentLocations();
+                Platform.runLater(() -> searchBar.getItems().setAll("No location found"));
             }
             searchBar.show();
         }
@@ -65,6 +69,7 @@ public class SearchBar {
     private void goToCurrentLocation(){
         LocationSearchResult newLocation = UserProfile.getCurrentLatLong();
         changeLocation(newLocation);
+        updateFavourites();
     }
 
     private boolean handleLongLat(String val){
@@ -113,11 +118,16 @@ public class SearchBar {
 
     public void updateFavourites(){
         if (favouriteBox.isSelected()){
-            boolean success = UserProfile.addToFavourites();
+            boolean success = UserProfile.addToFavourites() || UserProfile.getCurrentLocation().equalsIgnoreCase("current location");
             favouriteBox.setSelected(success);
         }
         else{
-            UserProfile.removeFromFavourites(UserProfile.getCurrentLocation());
+            if (UserProfile.getCurrentLocation().equalsIgnoreCase("current location")){
+                favouriteBox.setSelected(true);
+            }
+            else {
+                UserProfile.removeFromFavourites(UserProfile.getCurrentLocation());
+            }
         }
         showFavouriteAndRecentLocations();
     }
