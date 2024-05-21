@@ -6,7 +6,7 @@ public class UserProfile {
     private static final int maxFavourites = 4, maxRecents = 4;
     private static final List<String>  favourites = new ArrayList<>();
     private static final Deque<String> recents = new LinkedList<>();
-    private static String currentLocation = "Cambridge GB";
+    private static String currentLocation = "Current Location";
 
 
     public static void setCurrentLocation(LocationSearchResult place){
@@ -18,6 +18,10 @@ public class UserProfile {
         updateRecents();
     }
 
+    public static LocationSearchResult getCurrentLatLong(){
+        return new LocationSearchResult("Current", "Location", 52.2109f, 0.0917f);
+    }
+
     public static String getCurrentLocation(){
         return currentLocation;
     }
@@ -27,7 +31,7 @@ public class UserProfile {
     }
 
     public static boolean addToFavourites(){
-        if (favourites.size() >= maxFavourites){
+        if (favourites.size() >= maxFavourites  || currentLocation.equalsIgnoreCase("current location")){
             return false;
         }
         if (!favourites.contains(currentLocation)) {
@@ -44,6 +48,9 @@ public class UserProfile {
     }
 
     private static void updateRecents(){
+        if (currentLocation.equalsIgnoreCase("current location")){
+            return;
+        }
         recents.remove(currentLocation);
         recents.addFirst(currentLocation);
         recents.removeIf(favourites::contains);

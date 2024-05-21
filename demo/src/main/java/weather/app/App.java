@@ -25,9 +25,9 @@ public class App extends Application {
     {
         MainStage = stage;
 
-        LocationSearchResult[] Results = WeatherAndLocationManager.SearchLocations("Cambridge");
-        WeatherAndLocationManager.LoadWeatherData(Results[0]);
-        UserProfile.setCurrentLocation(Results[0]);
+        LocationSearchResult Result = UserProfile.getCurrentLatLong();
+        WeatherAndLocationManager.LoadWeatherData(Result);
+        UserProfile.setCurrentLocation(Result);
 
         scene = new Scene(loadFXML("home"), ScreenWidth, ScreenHeight);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
