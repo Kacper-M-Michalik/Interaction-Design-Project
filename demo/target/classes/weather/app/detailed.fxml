@@ -144,7 +144,7 @@
                                     <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                                  </padding>
                                  <children>
-                                    <VBox prefHeight="92.0" prefWidth="340.0">
+                                    <VBox prefHeight="81.0" prefWidth="340.0">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" underline="true">
                                              <VBox.margin>
