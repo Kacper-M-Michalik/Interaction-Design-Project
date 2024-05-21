@@ -21,7 +21,8 @@ public class SearchBar {
 
     private void showFavouriteAndRecentLocations(){
         Platform.runLater(() -> {
-            searchBar.getItems().setAll(UserProfile.getFavourites());
+            searchBar.getItems().setAll("Current Location");
+            searchBar.getItems().addAll(UserProfile.getFavourites());
             searchBar.getItems().addAll(UserProfile.getRecents());
         });
     }
@@ -34,6 +35,10 @@ public class SearchBar {
             return false;
         }
         searchValue = searchValue.replaceAll(", ", " ");
+        if (searchValue.equalsIgnoreCase("current location")){
+            goToCurrentLocation();
+            return true;
+        }
         if (handleLongLat(searchValue)){
             return true;
         }
@@ -55,6 +60,11 @@ public class SearchBar {
             searchBar.show();
         }
         return locationChanged;
+    }
+
+    private void goToCurrentLocation(){
+        LocationSearchResult newLocation = UserProfile.getCurrentLatLong();
+        changeLocation(newLocation);
     }
 
     private boolean handleLongLat(String val){
