@@ -15,7 +15,7 @@ public class SearchBar {
     public SearchBar(ComboBox<String> searchBar, CheckBox favouriteBox){
         this.searchBar = searchBar;
         this.favouriteBox = favouriteBox;
-        searchBar.setPromptText(UserProfile.getCurrentLocation());
+        searchBar.setPromptText("Enter city or coords");
         showFavouriteAndRecentLocations();
     }
 
@@ -29,8 +29,11 @@ public class SearchBar {
 
     public boolean requestLocationSwitch(){
         String searchValue = searchBar.getValue();
-        if (searchValue == null || searchValue.isEmpty() || searchValue.equals(UserProfile.getCurrentLocation())){
-            Platform.runLater(() -> searchBar.setValue(""));
+        if (searchValue == null || searchValue.isEmpty() || searchValue.equalsIgnoreCase(UserProfile.getCurrentLocation()) || searchValue.equalsIgnoreCase("no location found")){
+            Platform.runLater(() -> {
+                searchBar.setValue("");
+                searchBar.hide();
+            });
             showFavouriteAndRecentLocations();
             return false;
         }
@@ -55,7 +58,7 @@ public class SearchBar {
             if (possibleLocations.length > 0) {
                 updateSearchValues(possibleLocations);
             } else {
-                showFavouriteAndRecentLocations();
+                Platform.runLater(() -> searchBar.getItems().setAll("No location found"));
             }
             searchBar.show();
         }
