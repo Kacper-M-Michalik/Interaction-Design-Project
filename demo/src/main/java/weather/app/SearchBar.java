@@ -56,6 +56,7 @@ public class SearchBar {
             }
         }
         if (!locationChanged) {
+            Platform.runLater(() -> searchBar.setPromptText(UserProfile.getCurrentLocation()));
             if (possibleLocations.length > 0) {
                 updateSearchValues(possibleLocations);
             } else {
